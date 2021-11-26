@@ -7,7 +7,9 @@ public class Space : MonoBehaviour
 {
     // Inspector
 
-    public float G = 100f;
+    public GameObject repellerPrefab;
+    public float G = 10f;
+    public float C = 5f;
 
 
     // Properties
@@ -15,6 +17,7 @@ public class Space : MonoBehaviour
     public static Space Instance { get; set; }
 
     public List<Attractor> Attractors { get; set; }
+    public List<Repeller> Repellers { get; set; }
 
 
     // Unity
@@ -30,6 +33,14 @@ public class Space : MonoBehaviour
         SetComponents();
     }
 
+    private void Start() {
+        InstantiateRepellers();
+    }
+
+    private void Update() {
+
+    }
+
 
     // Public
 
@@ -41,8 +52,27 @@ public class Space : MonoBehaviour
 
     // Private
 
+    private void InstantiateRepeller(Vector3 position)
+    {
+        GameObject prefab = Instantiate(repellerPrefab, position, Quaternion.identity);
+        prefab.transform.SetParent(transform);
+    }
+
+    private void InstantiateRepellers()
+    {
+        for (int x = 1; x < 3; x++) {
+            for (int z = 1; z < 3; z++) {
+                InstantiateRepeller(new Vector3(x * 20, 0, z * 20 ));
+                InstantiateRepeller(new Vector3(x * 20, 0, -z * 20 ));
+                InstantiateRepeller(new Vector3(-x * 20, 0, z * 20 ));
+                InstantiateRepeller(new Vector3(-x * 20, 0, -z * 20 ));
+            }
+        }
+    }
+
     private void SetComponents()
     {
         Attractors = new List<Attractor>();
+        Repellers = new List<Repeller>();
     }
 }

@@ -13,7 +13,6 @@ public class Attractor : MonoBehaviour
 
     private void Awake() {
         SetComponents();
-
         StartCoroutine(WaitForSpace());
     }
 
