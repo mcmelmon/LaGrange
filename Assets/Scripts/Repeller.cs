@@ -17,8 +17,8 @@ public class Repeller : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        foreach (var attractor in Space.Instance.GetOtherAttractors(Attractor)) {
-            Repel(attractor);
+        foreach (var attractor in Space.Instance.GetBodies(Attractor)) {
+            if (!Attractor.Merging) Repel(attractor);
         }
     }
 
@@ -29,10 +29,10 @@ public class Repeller : MonoBehaviour
     {
         Vector3 direction = other.transform.position - transform.position;
         float distance = direction.magnitude;
-        float expansion = Space.Instance.C / Mathf.Pow(distance, 3);
+        float expansion = Mathf.Pow(Space.Instance.G * Body.mass, 1.2f) / Mathf.Pow(distance, 3);
         Vector3 force = direction.normalized * expansion;
 
-        other.Body.AddForce(force);
+        if (!float.IsNaN(force.x)) other.Body.AddForce(force);
     }
 
     private void SetComponents()
