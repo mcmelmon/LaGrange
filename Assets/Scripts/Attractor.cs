@@ -58,15 +58,19 @@ public class Attractor : MonoBehaviour
 
     private void Merge(Attractor other)
     {
-        if (other.centerOfUniverse) {
-            Merging = true;
-            other.Body.mass += Body.mass;
-            RemoveFromSpace();
-        } else {
+        if (Body.mass > other.Body.mass) {
             other.Merging = true;
             Body.mass += other.Body.mass;
+            transform.position = WeightedMidpoint(other);
             other.RemoveFromSpace();
+        } else {
+            Merging = true;
+            other.Body.mass += Body.mass;
+            transform.position = WeightedMidpoint(other);
+            RemoveFromSpace();
         }
+
+        transform.localScale = new Vector3(1, 1, 1) * (0.5f + Mathf.Log(Body.mass));
     }
 
     private void SetComponents()
@@ -74,7 +78,8 @@ public class Attractor : MonoBehaviour
         Body = GetComponent<Rigidbody>();
         Merging = false;
 
-        if (!centerOfUniverse) Body.mass = Random.Range(1, 10);
+        if (!centerOfUniverse) Body.mass = Random.Range(1, 20);
+        transform.localScale = new Vector3(1, 1, 1) * (0.5f + Mathf.Log(Body.mass));
     }
 
     private IEnumerator WaitForSpace()
@@ -84,5 +89,13 @@ public class Attractor : MonoBehaviour
         }
 
         Space.Instance.Bodies.Add(this);
+    }
+
+    private Vector3 WeightedMidpoint(Attractor other)
+    {
+        Vector3 direction = (transform.position - other.transform.position).normalized;
+        float combinedMass = Body.mass + other.Body.mass;
+
+        return transform.position += direction * (combinedMass - Body.mass) / combinedMass;
     }
 }

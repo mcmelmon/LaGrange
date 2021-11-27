@@ -55,8 +55,8 @@ public class Space : MonoBehaviour
 
     private void InstantiateBodies()
     {
-        for (int x = 0; x < 5; x++) {
-            for (int z = 0; z < 5; z++) {
+        for (int x = 2; x < 6; x++) {
+            for (int z = 2; z < 6; z++) {
                 InstantiateBody(new Vector3(x * separation, 0, z * separation ));
                 InstantiateBody(new Vector3(x * separation, 0, -z * separation ));
                 InstantiateBody(new Vector3(-x * separation, 0, z * separation ));
