@@ -7,17 +7,16 @@ public class Space : MonoBehaviour
 {
     // Inspector
 
-    public GameObject repellerPrefab;
-    public float G = 10f;
-    public float C = 5f;
+    public GameObject bodyPrefab;
+    public float G = 5f;
+    public float separation = 10f;
 
 
     // Properties
 
     public static Space Instance { get; set; }
 
-    public List<Attractor> Attractors { get; set; }
-    public List<Repeller> Repellers { get; set; }
+    public List<Attractor> Bodies { get; set; }
 
 
     // Unity
@@ -34,45 +33,40 @@ public class Space : MonoBehaviour
     }
 
     private void Start() {
-        InstantiateRepellers();
-    }
-
-    private void Update() {
-
+        InstantiateBodies();
     }
 
 
     // Public
 
-    public List<Attractor> GetOtherAttractors(Attractor attractor)
+    public List<Attractor> GetBodies(Attractor attractor)
     {
-        return Attractors.Where(other => other != attractor).ToList();
+        return Bodies.Where(other => other != null && other != attractor && !other.Merging).ToList();
     }
 
 
     // Private
 
-    private void InstantiateRepeller(Vector3 position)
+    private void InstantiateBody(Vector3 position)
     {
-        GameObject prefab = Instantiate(repellerPrefab, position, Quaternion.identity);
+        GameObject prefab = Instantiate(bodyPrefab, position, Quaternion.identity);
         prefab.transform.SetParent(transform);
     }
 
-    private void InstantiateRepellers()
+    private void InstantiateBodies()
     {
-        for (int x = 1; x < 3; x++) {
-            for (int z = 1; z < 3; z++) {
-                InstantiateRepeller(new Vector3(x * 20, 0, z * 20 ));
-                InstantiateRepeller(new Vector3(x * 20, 0, -z * 20 ));
-                InstantiateRepeller(new Vector3(-x * 20, 0, z * 20 ));
-                InstantiateRepeller(new Vector3(-x * 20, 0, -z * 20 ));
+        for (int x = 0; x < 5; x++) {
+            for (int z = 0; z < 5; z++) {
+                InstantiateBody(new Vector3(x * separation, 0, z * separation ));
+                InstantiateBody(new Vector3(x * separation, 0, -z * separation ));
+                InstantiateBody(new Vector3(-x * separation, 0, z * separation ));
+                InstantiateBody(new Vector3(-x * separation, 0, -z * separation ));
             }
         }
     }
 
     private void SetComponents()
     {
-        Attractors = new List<Attractor>();
-        Repellers = new List<Repeller>();
+        Bodies = new List<Attractor>();
     }
 }
