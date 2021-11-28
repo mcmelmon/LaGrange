@@ -29,7 +29,7 @@ public class Repeller : MonoBehaviour
     {
         Vector3 direction = other.transform.position - transform.position;
         float distance = direction.magnitude;
-        float expansion = Mathf.Pow(Space.Instance.G * Body.mass, 1.2f) / Mathf.Pow(distance, 3);
+        float expansion = Mathf.Pow(Body.mass, 1.2f) / Mathf.Pow(distance, 3);
         Vector3 force = direction.normalized * expansion;
 
         if (!float.IsNaN(force.x)) other.Body.AddForce(force);
