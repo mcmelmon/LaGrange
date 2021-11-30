@@ -439,6 +439,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 9b41326aae2434308a393ac4b0afa201, type: 2}
+    - target: {fileID: 4186021062082733434, guid: 260e419d29d1f4321a176175b8917ca6, type: 3}
+      propertyPath: centerOfUniverse
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4699561445033317973, guid: 260e419d29d1f4321a176175b8917ca6, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -509,7 +513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7815304557046503358, guid: 260e419d29d1f4321a176175b8917ca6, type: 3}
       propertyPath: m_Constraints
-      value: 4
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 260e419d29d1f4321a176175b8917ca6, type: 3}
@@ -548,7 +552,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyPrefab: {fileID: 6044598903165426464, guid: 260e419d29d1f4321a176175b8917ca6, type: 3}
-  G: 0.8
+  G: 2.1
+  C: 1.69
   separation: 12
 --- !u!4 &1410388987
 Transform:
