@@ -13,6 +13,7 @@ public class Body : MonoBehaviour
     // Properties
 
     public Attractor Attractor { get; set; }
+    public LineRenderer Line { get; set; }
     public bool Merging { get; set; }
     public Repeller Repeller { get; set; }
 
@@ -22,6 +23,10 @@ public class Body : MonoBehaviour
     private void Awake() {
         SetComponents();
         StartCoroutine(WaitForSpace());
+    }
+
+    private void FixedUpdate() {
+        DrawForces();
     }
 
     private void OnCollisionEnter(Collision other) {
@@ -35,6 +40,21 @@ public class Body : MonoBehaviour
     public void AddForce(Vector3 force)
     {
         Physics.AddForce(force);
+    }
+
+    public void DrawForces()
+    {
+        // The line renderer redraws each call, so we either need a renderer for every
+        // other body, or we need to draw all the lines at once
+
+
+        List<Body> otherBodies = Space.Instance.GetBodies(this);
+        Line.positionCount = otherBodies.Count + 1;
+        Line.SetPosition(0, transform.position);
+
+        for (int i = 1; i < Line.positionCount; i++) {
+            Line.SetPosition(i, otherBodies[i-1].transform.position);
+        }
     }
 
     public float GetMass()
@@ -83,6 +103,7 @@ public class Body : MonoBehaviour
     private void SetComponents()
     {
         Attractor = GetComponent<Attractor>();
+        Line = GetComponent<LineRenderer>();
         Merging = false;
         Physics = GetComponent<Rigidbody>();
         Repeller = GetComponent<Repeller>();

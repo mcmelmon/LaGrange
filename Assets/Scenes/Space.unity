@@ -503,6 +503,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Singularity
       objectReference: {fileID: 0}
+    - target: {fileID: 6044598903165426464, guid: 260e419d29d1f4321a176175b8917ca6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7257358293628212201, guid: 260e419d29d1f4321a176175b8917ca6, type: 3}
       propertyPath: centerOfUniverse
       value: 1

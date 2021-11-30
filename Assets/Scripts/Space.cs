@@ -42,7 +42,7 @@ public class Space : MonoBehaviour
 
     public List<Body> GetBodies(Body body)
     {
-        return Bodies.Where(other => other != null && other != body && !other.Merging).ToList();
+        return Bodies.Where(other => other != body).ToList();
     }
 
 
@@ -56,8 +56,8 @@ public class Space : MonoBehaviour
 
     private void InstantiateBodies()
     {
-        for (int x = 2; x < 6; x++) {
-            for (int z = 2; z < 6; z++) {
+        for (int x = 2; x < 5; x++) {
+            for (int z = 2; z < 5; z++) {
                 InstantiateBody(new Vector3(x * separation, 0, z * separation ));
                 InstantiateBody(new Vector3(x * separation, 0, -z * separation ));
                 InstantiateBody(new Vector3(-x * separation, 0, z * separation ));
