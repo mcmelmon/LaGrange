@@ -6,8 +6,7 @@ public class Repeller : MonoBehaviour
 {
     // Properties
 
-    public Attractor Attractor { get; set; }
-    public Rigidbody Body { get; set; }
+    public Body Body { get; set; }
 
 
     // Unity
@@ -17,27 +16,26 @@ public class Repeller : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        foreach (var attractor in Space.Instance.GetBodies(Attractor)) {
-            if (!Attractor.Merging) Repel(attractor);
+        foreach (var body in Space.Instance.GetBodies(Body)) {
+            if (!Body.Merging) Repel(body);
         }
     }
 
 
     // Private
 
-    private void Repel(Attractor other)
+    private void Repel(Body other)
     {
         Vector3 direction = other.transform.position - transform.position;
         float distance = direction.magnitude;
-        float expansion = Mathf.Pow(Body.mass, 1.2f) / Mathf.Pow(distance, 3);
+        float expansion =  Mathf.Pow(Body.GetMass(), Space.Instance.C) / (Space.Instance.G * Mathf.Pow(distance, 4));
         Vector3 force = direction.normalized * expansion;
 
-        if (!float.IsNaN(force.x)) other.Body.AddForce(force);
+        if (!float.IsNaN(force.x)) other.AddForce(force);
     }
 
     private void SetComponents()
     {
-        Attractor = GetComponent<Attractor>();
-        Body = GetComponent<Rigidbody>();
+        Body = GetComponent<Body>();
     }
 }

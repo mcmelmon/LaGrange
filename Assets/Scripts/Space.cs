@@ -9,6 +9,7 @@ public class Space : MonoBehaviour
 
     public GameObject bodyPrefab;
     public float G = 5f;
+    public float C = 1.5f;
     public float separation = 10f;
 
 
@@ -16,7 +17,7 @@ public class Space : MonoBehaviour
 
     public static Space Instance { get; set; }
 
-    public List<Attractor> Bodies { get; set; }
+    public List<Body> Bodies { get; set; }
 
 
     // Unity
@@ -39,9 +40,9 @@ public class Space : MonoBehaviour
 
     // Public
 
-    public List<Attractor> GetBodies(Attractor attractor)
+    public List<Body> GetBodies(Body body)
     {
-        return Bodies.Where(other => other != null && other != attractor && !other.Merging).ToList();
+        return Bodies.Where(other => other != null && other != body && !other.Merging).ToList();
     }
 
 
@@ -67,6 +68,6 @@ public class Space : MonoBehaviour
 
     private void SetComponents()
     {
-        Bodies = new List<Attractor>();
+        Bodies = new List<Body>();
     }
 }
