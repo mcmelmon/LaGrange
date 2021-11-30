@@ -16,7 +16,8 @@ public class Attractor : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        foreach (var body in Space.Instance.GetBodies(Body)) {
+        List<Body> otherBodies = Space.Instance.GetBodies(Body);
+        foreach (var body in otherBodies) {
             if (!Body.Merging) Attract(body);
         }
     }
