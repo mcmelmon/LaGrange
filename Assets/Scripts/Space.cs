@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ public class Space : MonoBehaviour
     public float G = 5f;
     public float C = 1.5f;
     public float separation = 10f;
+    public CinemachineVirtualCamera eyeOfGod;
 
 
     // Properties
@@ -52,6 +54,7 @@ public class Space : MonoBehaviour
     {
         GameObject prefab = Instantiate(bodyPrefab, position, Quaternion.identity);
         prefab.transform.SetParent(transform);
+        prefab.layer = 6;
     }
 
     private void InstantiateBodies()

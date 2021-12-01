@@ -7,7 +7,7 @@ public class Body : MonoBehaviour
     // Inspector
 
     public bool centerOfUniverse = false;
-
+    public GameObject linePrefab;
 
 
     // Properties
@@ -25,10 +25,6 @@ public class Body : MonoBehaviour
         StartCoroutine(WaitForSpace());
     }
 
-    private void FixedUpdate() {
-        DrawForces();
-    }
-
     private void OnCollisionEnter(Collision other) {
         Body partner = other.transform.GetComponent<Body>();
         if (!Merging) Merge(partner);
@@ -42,21 +38,6 @@ public class Body : MonoBehaviour
         Physics.AddForce(force);
     }
 
-    public void DrawForces()
-    {
-        // The line renderer redraws each call, so we either need a renderer for every
-        // other body, or we need to draw all the lines at once
-
-
-        List<Body> otherBodies = Space.Instance.GetBodies(this);
-        Line.positionCount = otherBodies.Count + 1;
-        Line.SetPosition(0, transform.position);
-
-        for (int i = 1; i < Line.positionCount; i++) {
-            Line.SetPosition(i, otherBodies[i-1].transform.position);
-        }
-    }
-
     public float GetMass()
     {
         return Physics.mass;
@@ -67,12 +48,21 @@ public class Body : MonoBehaviour
         Physics.mass += increase;
     }
 
-    public void RemoveFromSpace()
+    public void RemoveFromSpace(Body absorber)
     {
-        if (!centerOfUniverse) {
-            Space.Instance.Bodies.Remove(this);
-            Destroy(this.transform.gameObject);
+        LineRenderer[] lines = GetComponentsInChildren<LineRenderer>();
+
+        foreach (KeyValuePair<Body, LineRenderer> pair in Attractor.Lines) {
+            Destroy(pair.Value.transform.gameObject);
+
+            if (pair.Key.Attractor.Lines.ContainsKey(this)) {
+                Destroy(pair.Key.Attractor.Lines[this]);
+                pair.Key.Attractor.Lines.Remove(this);
+            }
         }
+
+        Space.Instance.Bodies.Remove(this);
+        Destroy(this.transform.gameObject);
     }
 
     public void SetMass(float mass)
@@ -89,12 +79,12 @@ public class Body : MonoBehaviour
             other.Merging = true;
             IncreaseMass(other.GetMass());
             transform.position = WeightedMidpoint(other);
-            other.RemoveFromSpace();
+            other.RemoveFromSpace(this);
         } else {
             Merging = true;
             other.IncreaseMass(GetMass());
             transform.position = WeightedMidpoint(other);
-            RemoveFromSpace();
+            RemoveFromSpace(other);
         }
 
         transform.localScale = new Vector3(1, 1, 1) * (0.5f + Mathf.Log(GetMass()));

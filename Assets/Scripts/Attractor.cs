@@ -7,6 +7,7 @@ public class Attractor : MonoBehaviour
     // Properties
 
     public Body Body { get; set; }
+    public Dictionary<Body, LineRenderer> Lines { get; set; }
 
 
     // Unity
@@ -33,11 +34,33 @@ public class Attractor : MonoBehaviour
         float gravitation = Space.Instance.G * (Body.GetMass() * other.GetMass()) / Mathf.Pow(distance, 2);
         Vector3 force = direction.normalized * gravitation;
 
+        DrawForceTo(other, gravitation);
+
         if (!float.IsNaN(force.x)) other.AddForce(force);
+    }
+
+    public void DrawForceTo(Body other, float gravitation)
+    {
+        // We end up drawing two lines between each body, but this ends up
+        // saving Body's RemoveFromSpace the trouble of searching for
+        // unconnected lines
+
+        if (Lines.ContainsKey(other)) {
+            Lines[other].startWidth = Mathf.Log(gravitation) / 10f;
+            Lines[other].endWidth = Mathf.Log(gravitation) / 10f;
+            Lines[other].SetPosition(0, transform.position);
+            Lines[other].SetPosition(1, other.transform.position);
+        } else {
+            GameObject prefab = Instantiate(Body.linePrefab, transform.position, Quaternion.identity);
+            prefab.transform.SetParent(transform);
+            Lines[other] = prefab.GetComponent<LineRenderer>();
+            Lines[other].positionCount = 2;
+        }
     }
 
     private void SetComponents()
     {
         Body = GetComponent<Body>();
+        Lines = new Dictionary<Body, LineRenderer>();
     }
 }
