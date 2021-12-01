@@ -94,7 +94,7 @@ public class TouchController : MonoBehaviour
         Vector3 target = new Vector3();
 
         while (!Released) {
-            if (Body != null) {
+            if (Body != null && !Body.centerOfUniverse) {
                 direction = CurrentScreenTouchPoint - Body.transform.position;
                 target = CurrentScreenTouchPoint + (direction.normalized * 2);
                 smoothedPosition = Vector3.Lerp(Body.transform.position, target, smoothSpeed * Time.deltaTime);

@@ -46,8 +46,8 @@ public class Attractor : MonoBehaviour
         // unconnected lines
 
         if (Lines.ContainsKey(other)) {
-            Lines[other].startWidth = Mathf.Log(gravitation) / 10f;
-            Lines[other].endWidth = Mathf.Log(gravitation) / 10f;
+            Lines[other].startWidth = Mathf.Log(gravitation) / 6f;
+            Lines[other].endWidth = Mathf.Log(gravitation) / 6f;
             Lines[other].SetPosition(0, transform.position);
             Lines[other].SetPosition(1, other.transform.position);
         } else {

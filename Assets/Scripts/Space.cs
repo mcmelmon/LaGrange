@@ -10,7 +10,7 @@ public class Space : MonoBehaviour
 
     public GameObject bodyPrefab;
     public float G = 5f;
-    public float C = 1.5f;
+    public float E = 1.5f;
     public float separation = 10f;
     public CinemachineVirtualCamera eyeOfGod;
 
@@ -59,8 +59,8 @@ public class Space : MonoBehaviour
 
     private void InstantiateBodies()
     {
-        for (int x = 2; x < 5; x++) {
-            for (int z = 2; z < 5; z++) {
+        for (int x = 1; x < 4; x++) {
+            for (int z = 1; z < 4; z++) {
                 InstantiateBody(new Vector3(x * separation, 0, z * separation ));
                 InstantiateBody(new Vector3(x * separation, 0, -z * separation ));
                 InstantiateBody(new Vector3(-x * separation, 0, z * separation ));
