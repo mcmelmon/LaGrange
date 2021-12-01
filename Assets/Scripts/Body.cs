@@ -30,6 +30,10 @@ public class Body : MonoBehaviour
         if (!Merging) Merge(partner);
     }
 
+    private void Start() {
+        if (!centerOfUniverse) StartWithRandomForce();
+    }
+
 
     // Public
 
@@ -100,6 +104,32 @@ public class Body : MonoBehaviour
 
         if (!centerOfUniverse) Physics.mass = Random.Range(1, 10);
         transform.localScale = new Vector3(1, 1, 1) * (0.5f + Mathf.Log(GetMass()));
+    }
+
+    private void StartWithRandomForce()
+    {
+        int choice = Random.Range(0,4);
+        Vector3 direction = new Vector3();
+
+        switch (choice) {
+            case 0:
+                direction = Vector3.left;
+                break;
+            case 1:
+                direction = Vector3.right;
+                break;
+            case 2:
+                direction = Vector3.forward;
+                break;
+            case 3:
+                direction = Vector3.back;
+                break;
+        }
+
+        float expansion =  Random.Range(3,6);
+        Vector3 force = direction * expansion;
+
+        Physics.AddForce(force, ForceMode.VelocityChange);
     }
 
     private IEnumerator WaitForSpace()
