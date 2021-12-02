@@ -118,26 +118,9 @@ public class Body : MonoBehaviour
 
     private void StartWithRandomForce()
     {
-        int choice = Random.Range(0,4);
-        Vector3 direction = new Vector3();
-
-        switch (choice) {
-            case 0:
-                direction = Vector3.left;
-                break;
-            case 1:
-                direction = Vector3.right;
-                break;
-            case 2:
-                direction = Vector3.forward;
-                break;
-            case 3:
-                direction = Vector3.back;
-                break;
-        }
-
-        float expansion =  Random.Range(1,4);
-        Vector3 force = direction * expansion;
+        Vector3 direction = new Vector3(Random.Range(-359, 359),Random.Range(-359, 359),Random.Range(-359, 359)).normalized;
+        float oomph =  Random.Range(7, 11);
+        Vector3 force = direction * oomph;
 
         Physics.AddForce(force, ForceMode.VelocityChange);
     }
