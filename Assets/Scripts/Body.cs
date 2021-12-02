@@ -31,7 +31,13 @@ public class Body : MonoBehaviour
     }
 
     private void Start() {
+        ScaleHorizon();
         if (!centerOfUniverse) StartWithRandomForce();
+    }
+
+    private void Update() {
+        float distanceFromCenter = Vector3.Distance(transform.position, Space.Instance.singularity.transform.position);
+        if (distanceFromCenter > 250) RemoveFromSpace();
     }
 
 
@@ -52,7 +58,7 @@ public class Body : MonoBehaviour
         Physics.mass += increase;
     }
 
-    public void RemoveFromSpace(Body absorber)
+    public void RemoveFromSpace()
     {
         LineRenderer[] lines = GetComponentsInChildren<LineRenderer>();
 
@@ -83,15 +89,20 @@ public class Body : MonoBehaviour
             other.Merging = true;
             IncreaseMass(other.GetMass());
             transform.position = WeightedMidpoint(other);
-            other.RemoveFromSpace(this);
+            other.RemoveFromSpace();
         } else {
             Merging = true;
             other.IncreaseMass(GetMass());
             transform.position = WeightedMidpoint(other);
-            RemoveFromSpace(other);
+            RemoveFromSpace();
         }
 
-        transform.localScale = new Vector3(1, 1, 1) * (0.5f + Mathf.Log(GetMass()));
+        ScaleHorizon();
+    }
+
+    private void ScaleHorizon()
+    {
+        transform.localScale = new Vector3(1, 1, 1) * (0.5f + (Mathf.Log(6f * GetMass() / Space.Instance.G)));
     }
 
     private void SetComponents()
@@ -103,7 +114,6 @@ public class Body : MonoBehaviour
         Repeller = GetComponent<Repeller>();
 
         if (!centerOfUniverse) Physics.mass = Random.Range(1, 10);
-        transform.localScale = new Vector3(1, 1, 1) * (0.5f + Mathf.Log(GetMass()));
     }
 
     private void StartWithRandomForce()
@@ -126,7 +136,7 @@ public class Body : MonoBehaviour
                 break;
         }
 
-        float expansion =  Random.Range(3,6);
+        float expansion =  Random.Range(1,4);
         Vector3 force = direction * expansion;
 
         Physics.AddForce(force, ForceMode.VelocityChange);
