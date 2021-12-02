@@ -20,6 +20,8 @@ public class Space : MonoBehaviour
 
     public static Space Instance { get; set; }
 
+    public List<Spawner> Spawners { get; set; }
+
     public List<Body> Bodies { get; set; }
 
 
@@ -55,12 +57,13 @@ public class Space : MonoBehaviour
     {
         GameObject prefab = Instantiate(spawnerPrefab, position, Quaternion.identity);
         prefab.transform.SetParent(singularity.spacePlane.transform);
+        Spawners.Add(prefab.GetComponent<Spawner>());
     }
 
     private void InstantiateSpawners()
     {
-        for (int x = 1; x < 4; x++) {
-            for (int z = 1; z < 4; z++) {
+        for (int x = 0; x < 4; x++) {
+            for (int z = 0; z < 4; z++) {
                 InstantiateSpawner(new Vector3(x * separation, 0, z * separation ));
                 InstantiateSpawner(new Vector3(x * separation, 0, -z * separation ));
                 InstantiateSpawner(new Vector3(-x * separation, 0, z * separation ));
@@ -72,5 +75,6 @@ public class Space : MonoBehaviour
     private void SetComponents()
     {
         Bodies = new List<Body>();
+        Spawners = new List<Spawner>();
     }
 }

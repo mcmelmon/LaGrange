@@ -46,6 +46,7 @@ public class Attractor : MonoBehaviour
         // unconnected lines
 
         if (Lines.ContainsKey(other)) {
+            Lines[other].enabled = true;
             Lines[other].startWidth = Mathf.Log(gravitation) / 10f;
             Lines[other].endWidth = Mathf.Log(gravitation) / 10f;
             Lines[other].SetPosition(0, transform.position);
@@ -55,6 +56,7 @@ public class Attractor : MonoBehaviour
             prefab.transform.SetParent(transform);
             Lines[other] = prefab.GetComponent<LineRenderer>();
             Lines[other].positionCount = 2;
+            Lines[other].enabled = false;
         }
     }
 

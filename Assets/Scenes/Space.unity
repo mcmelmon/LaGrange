@@ -521,7 +521,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7815304557046503358, guid: 260e419d29d1f4321a176175b8917ca6, type: 3}
       propertyPath: m_Constraints
-      value: 116
+      value: 126
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 260e419d29d1f4321a176175b8917ca6, type: 3}
@@ -562,9 +562,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnerPrefab: {fileID: 8722233512899701663, guid: 97bdee01313404f3794c6df39f7da079, type: 3}
-  G: 5.82
-  E: 3.97
-  separation: 14
+  G: 7.13
+  E: 4.11
+  separation: 18
   eyeOfGod: {fileID: 323978119}
   singularity: {fileID: 2058846661}
 --- !u!4 &1410388987
