@@ -31,7 +31,7 @@ public class Attractor : MonoBehaviour
         Vector3 direction = transform.position - other.transform.position;
         float distance = direction.magnitude;
 
-        float gravitation = Space.Instance.G * (Body.GetMass() * other.GetMass()) / Mathf.Pow(distance, 2);
+        float gravitation = Space.Instance.G * (Body.GetMass() * other.GetMass()) / Mathf.Pow(2f * distance, 2);
         Vector3 force = direction.normalized * gravitation;
 
         DrawForceTo(other, gravitation);
@@ -46,8 +46,8 @@ public class Attractor : MonoBehaviour
         // unconnected lines
 
         if (Lines.ContainsKey(other)) {
-            Lines[other].startWidth = Mathf.Log(gravitation) / 6f;
-            Lines[other].endWidth = Mathf.Log(gravitation) / 6f;
+            Lines[other].startWidth = Mathf.Log(gravitation) / 10f;
+            Lines[other].endWidth = Mathf.Log(gravitation) / 10f;
             Lines[other].SetPosition(0, transform.position);
             Lines[other].SetPosition(1, other.transform.position);
         } else {

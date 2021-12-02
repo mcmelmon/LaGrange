@@ -8,11 +8,12 @@ public class Space : MonoBehaviour
 {
     // Inspector
 
-    public GameObject bodyPrefab;
+    public GameObject spawnerPrefab;
     public float G = 5f;
     public float E = 1.5f;
     public float separation = 10f;
     public CinemachineVirtualCamera eyeOfGod;
+    public Singularity singularity;
 
 
     // Properties
@@ -36,7 +37,7 @@ public class Space : MonoBehaviour
     }
 
     private void Start() {
-        InstantiateBodies();
+        InstantiateSpawners();
     }
 
 
@@ -50,21 +51,20 @@ public class Space : MonoBehaviour
 
     // Private
 
-    private void InstantiateBody(Vector3 position)
+    private void InstantiateSpawner(Vector3 position)
     {
-        GameObject prefab = Instantiate(bodyPrefab, position, Quaternion.identity);
-        prefab.transform.SetParent(transform);
-        prefab.layer = 6;
+        GameObject prefab = Instantiate(spawnerPrefab, position, Quaternion.identity);
+        prefab.transform.SetParent(singularity.spacePlane.transform);
     }
 
-    private void InstantiateBodies()
+    private void InstantiateSpawners()
     {
         for (int x = 1; x < 4; x++) {
             for (int z = 1; z < 4; z++) {
-                InstantiateBody(new Vector3(x * separation, 0, z * separation ));
-                InstantiateBody(new Vector3(x * separation, 0, -z * separation ));
-                InstantiateBody(new Vector3(-x * separation, 0, z * separation ));
-                InstantiateBody(new Vector3(-x * separation, 0, -z * separation ));
+                InstantiateSpawner(new Vector3(x * separation, 0, z * separation ));
+                InstantiateSpawner(new Vector3(x * separation, 0, -z * separation ));
+                InstantiateSpawner(new Vector3(-x * separation, 0, z * separation ));
+                InstantiateSpawner(new Vector3(-x * separation, 0, -z * separation ));
             }
         }
     }
