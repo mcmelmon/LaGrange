@@ -13,7 +13,7 @@ public class Space : MonoBehaviour
     public float E = 1.5f;
     public float separation = 10f;
     public CinemachineVirtualCamera eyeOfGod;
-    public Singularity singularity;
+    public GameObject linePrefab;
 
 
     // Properties
@@ -56,14 +56,14 @@ public class Space : MonoBehaviour
     private void InstantiateSpawner(Vector3 position)
     {
         GameObject prefab = Instantiate(spawnerPrefab, position, Quaternion.identity);
-        prefab.transform.SetParent(singularity.spacePlane.transform);
+        prefab.transform.SetParent(Player.Instance.spacePlane.transform);
         Spawners.Add(prefab.GetComponent<Spawner>());
     }
 
     private void InstantiateSpawners()
     {
-        for (int x = 0; x < 4; x++) {
-            for (int z = 0; z < 4; z++) {
+        for (int x = 1; x < 4; x++) {
+            for (int z = 1; z < 4; z++) {
                 InstantiateSpawner(new Vector3(x * separation, 0, z * separation ));
                 InstantiateSpawner(new Vector3(x * separation, 0, -z * separation ));
                 InstantiateSpawner(new Vector3(-x * separation, 0, z * separation ));

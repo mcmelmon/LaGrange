@@ -19,7 +19,7 @@ public class Attractor : MonoBehaviour
     private void FixedUpdate() {
         List<Body> otherBodies = Space.Instance.GetBodies(Body);
         foreach (var body in otherBodies) {
-            if (!Body.Merging) Attract(body);
+            if (!Body.Merging()) Attract(body);
         }
     }
 
@@ -47,12 +47,13 @@ public class Attractor : MonoBehaviour
 
         if (Lines.ContainsKey(other)) {
             Lines[other].enabled = true;
-            Lines[other].startWidth = Mathf.Log(gravitation) / 10f;
-            Lines[other].endWidth = Mathf.Log(gravitation) / 10f;
+            float scaledForce = Mathf.Sqrt(gravitation);
+            Lines[other].startWidth = scaledForce > 0.3f ? Mathf.Min(scaledForce, 2) : 0;
+            Lines[other].endWidth = scaledForce > 0.3f ? Mathf.Min(scaledForce, 2) : 0;
             Lines[other].SetPosition(0, transform.position);
             Lines[other].SetPosition(1, other.transform.position);
         } else {
-            GameObject prefab = Instantiate(Body.linePrefab, transform.position, Quaternion.identity);
+            GameObject prefab = Instantiate(Space.Instance.linePrefab, transform.position, Quaternion.identity);
             prefab.transform.SetParent(transform);
             Lines[other] = prefab.GetComponent<LineRenderer>();
             Lines[other].positionCount = 2;

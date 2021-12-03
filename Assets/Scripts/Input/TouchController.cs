@@ -8,7 +8,6 @@ public class TouchController : MonoBehaviour
 {
     // Properties
 
-    private Body Body { get; set; }
     private Vector3 CurrentScreenTouchPoint { get; set; }
     private CinemachineVirtualCamera Eye { get; set; }
     private FingerOfGod Finger { get; set; }
@@ -68,18 +67,9 @@ public class TouchController : MonoBehaviour
         int space = LayerMask.GetMask("Space");
         int interactable = LayerMask.GetMask("Interactable");
 
-        Ray moveBody = Camera.main.ScreenPointToRay(screenCoordinates);
-        if (Physics.Raycast(moveBody, out RaycastHit cameraHit, Mathf.Infinity, space)) {
+        Ray movePlayer = Camera.main.ScreenPointToRay(screenCoordinates);
+        if (Physics.Raycast(movePlayer, out RaycastHit cameraHit, Mathf.Infinity, space)) {
             CurrentScreenTouchPoint = new Vector3(cameraHit.point.x, 0, cameraHit.point.z);
-        }
-
-        Ray select = Camera.main.ScreenPointToRay(screenCoordinates);
-        if (Physics.Raycast(select, out RaycastHit selectHit, Mathf.Infinity, interactable)) {
-            GameObject hitObject = selectHit.collider.gameObject;
-
-            if (hitObject != null) {
-                Body = hitObject.GetComponent<Body>();
-            }
         }
     }
 
@@ -88,23 +78,20 @@ public class TouchController : MonoBehaviour
 
     private IEnumerator WhileHolding(Vector2 position)
     {
-        float smoothSpeed = 1.5f;
-        Vector3 smoothedPosition = new Vector3();
-        Vector3 direction = new Vector3();
+        float smoothSpeed = 2.5f;
         Vector3 target = new Vector3();
+        Quaternion rotation;
 
         while (!Released) {
-            if (Body != null && !Body.centerOfUniverse) {
-                direction = CurrentScreenTouchPoint - Body.transform.position;
-                target = CurrentScreenTouchPoint + (direction.normalized * 2);
-                smoothedPosition = Vector3.Lerp(Body.transform.position, target, smoothSpeed * Time.deltaTime);
-                Body.transform.position = smoothedPosition;
+            if (Player.Instance != null) {
+                target = (CurrentScreenTouchPoint - Player.Instance.transform.position).normalized;
+                target.y = 0;
+                rotation = Quaternion.LookRotation(target);
+                Player.Instance.ship.transform.rotation = Quaternion.Slerp(Player.Instance.ship.transform.rotation, rotation, Time.deltaTime * smoothSpeed);
             }
 
             yield return null;
         }
-
-        Body = null;
     }
 
     private void SetComponents()
