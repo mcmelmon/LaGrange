@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
 
     public static Player Instance { get; set; }
 
+    public Body Body { get; set; }
+
 
     // Unity
 
@@ -28,19 +30,11 @@ public class Player : MonoBehaviour
         SetComponents();
     }
 
-    void Update()
-    {
-        spacePlane.transform.position = new Vector3(transform.position.x, -10, transform.position.z);
-    }
-
-
-    // Public
-
 
     // Private
 
     private void SetComponents()
     {
-
+        Body = ship.GetComponent<Body>();
     }
 }

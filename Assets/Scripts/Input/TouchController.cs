@@ -78,16 +78,19 @@ public class TouchController : MonoBehaviour
 
     private IEnumerator WhileHolding(Vector2 position)
     {
-        float smoothSpeed = 2.5f;
+        float smoothSpeed = 6f;
         Vector3 target = new Vector3();
         Quaternion rotation;
 
         while (!Released) {
             if (Player.Instance != null) {
-                target = (CurrentScreenTouchPoint - Player.Instance.transform.position).normalized;
-                target.y = 0;
-                rotation = Quaternion.LookRotation(target);
-                Player.Instance.ship.transform.rotation = Quaternion.Slerp(Player.Instance.ship.transform.rotation, rotation, Time.deltaTime * smoothSpeed);
+                if (Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.ship.transform.position) > 2) {
+                    target = (CurrentScreenTouchPoint - Player.Instance.ship.transform.position).normalized;
+                    target.y = 0;
+                    rotation = Quaternion.LookRotation(target);
+                    Player.Instance.ship.transform.rotation = Quaternion.Slerp(Player.Instance.ship.transform.rotation, rotation, Time.deltaTime * smoothSpeed);
+                    Player.Instance.Body.AddForce(target * 0.1f);
+                }
             }
 
             yield return null;

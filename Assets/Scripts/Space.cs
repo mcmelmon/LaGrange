@@ -24,6 +24,8 @@ public class Space : MonoBehaviour
 
     public List<Body> Bodies { get; set; }
 
+    private IEnumerator MoveCameraRoutine { get; set; }
+
 
     // Unity
 
@@ -40,6 +42,7 @@ public class Space : MonoBehaviour
 
     private void Start() {
         InstantiateSpawners();
+        StartCoroutine(SmoothCameraFollowPlayer());
     }
 
 
@@ -48,6 +51,11 @@ public class Space : MonoBehaviour
     public List<Body> GetBodies(Body body)
     {
         return Bodies.Where(other => other != body).ToList();
+    }
+
+    public void ResetCamera()
+    {
+        eyeOfGod.transform.position = Player.Instance.ship.transform.position + new Vector3(0, 85, 0);
     }
 
 
@@ -76,5 +84,25 @@ public class Space : MonoBehaviour
     {
         Bodies = new List<Body>();
         Spawners = new List<Spawner>();
+    }
+
+    private IEnumerator SmoothCameraFollowPlayer()
+    {
+        float smoothSpeed = 1.5f;
+        Vector3 smoothedPosition = new Vector3();
+        Vector3 target = new Vector3(Player.Instance.ship.transform.position.x, eyeOfGod.transform.position.y, Player.Instance.ship.transform.position.z);
+        float distance = Mathf.Abs(Vector3.Distance(target, eyeOfGod.transform.position));
+
+        while (true) {
+            if (distance > 0.1f) {
+                smoothedPosition = Vector3.Lerp(eyeOfGod.transform.position, target, smoothSpeed * Time.deltaTime);
+                eyeOfGod.transform.position = smoothedPosition;
+            }
+
+            target = new Vector3(Player.Instance.ship.transform.position.x, eyeOfGod.transform.position.y, Player.Instance.ship.transform.position.z);
+            distance = Mathf.Abs(Vector3.Distance(target, eyeOfGod.transform.position));
+
+            yield return null;
+        }
     }
 }
