@@ -14,6 +14,8 @@ public class Space : MonoBehaviour
     public float separation = 10f;
     public CinemachineVirtualCamera eyeOfGod;
     public GameObject linePrefab;
+    public Transform movementPlane;
+    public Transform spawnPlane;
 
 
     // Properties
@@ -45,6 +47,10 @@ public class Space : MonoBehaviour
         StartCoroutine(SmoothCameraFollowPlayer());
     }
 
+    private void Update() {
+        movementPlane.position = new Vector3(Player.Instance.transform.position.x, Player.Instance.transform.position.y, movementPlane.position.z);
+    }
+
 
     // Public
 
@@ -55,7 +61,7 @@ public class Space : MonoBehaviour
 
     public void ResetCamera()
     {
-        eyeOfGod.transform.position = Player.Instance.ship.transform.position + new Vector3(0, 85, 0);
+        eyeOfGod.transform.position = Player.Instance.transform.position + new Vector3(0, 0, eyeOfGod.transform.position.z);
     }
 
 
@@ -64,18 +70,18 @@ public class Space : MonoBehaviour
     private void InstantiateSpawner(Vector3 position)
     {
         GameObject prefab = Instantiate(spawnerPrefab, position, Quaternion.identity);
-        prefab.transform.SetParent(Player.Instance.spacePlane.transform);
+        prefab.transform.SetParent(spawnPlane);
         Spawners.Add(prefab.GetComponent<Spawner>());
     }
 
     private void InstantiateSpawners()
     {
         for (int x = 1; x < 4; x++) {
-            for (int z = 1; z < 4; z++) {
-                InstantiateSpawner(new Vector3(x * separation, 0, z * separation ));
-                InstantiateSpawner(new Vector3(x * separation, 0, -z * separation ));
-                InstantiateSpawner(new Vector3(-x * separation, 0, z * separation ));
-                InstantiateSpawner(new Vector3(-x * separation, 0, -z * separation ));
+            for (int y = 1; y < 4; y++) {
+                InstantiateSpawner(new Vector3(x * separation, y * separation, 0 ));
+                InstantiateSpawner(new Vector3(x * separation, -y * separation, 0 ));
+                InstantiateSpawner(new Vector3(-x * separation, y * separation, 0 ));
+                InstantiateSpawner(new Vector3(-x * separation, -y * separation, 0 ));
             }
         }
     }
@@ -90,7 +96,7 @@ public class Space : MonoBehaviour
     {
         float smoothSpeed = 1.5f;
         Vector3 smoothedPosition = new Vector3();
-        Vector3 target = new Vector3(Player.Instance.ship.transform.position.x, eyeOfGod.transform.position.y, Player.Instance.ship.transform.position.z);
+        Vector3 target = new Vector3(Player.Instance.transform.position.x, Player.Instance.transform.position.y, eyeOfGod.transform.position.z);
         float distance = Mathf.Abs(Vector3.Distance(target, eyeOfGod.transform.position));
 
         while (true) {
@@ -99,7 +105,7 @@ public class Space : MonoBehaviour
                 eyeOfGod.transform.position = smoothedPosition;
             }
 
-            target = new Vector3(Player.Instance.ship.transform.position.x, eyeOfGod.transform.position.y, Player.Instance.ship.transform.position.z);
+            target = new Vector3(Player.Instance.transform.position.x, Player.Instance.transform.position.y, eyeOfGod.transform.position.z);
             distance = Mathf.Abs(Vector3.Distance(target, eyeOfGod.transform.position));
 
             yield return null;

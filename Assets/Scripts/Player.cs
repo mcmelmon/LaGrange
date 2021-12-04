@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Inspector
-
-    public GameObject spacePlane;
-    public Transform ship;
-
-
     // Properties
 
     public static Player Instance { get; set; }
@@ -35,6 +29,6 @@ public class Player : MonoBehaviour
 
     private void SetComponents()
     {
-        Body = ship.GetComponent<Body>();
+        Body = GetComponent<Body>();
     }
 }
