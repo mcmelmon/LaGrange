@@ -17,7 +17,7 @@ public class Repeller : MonoBehaviour
 
     private void FixedUpdate() {
         foreach (var body in Space.Instance.GetBodies(Body)) {
-            if (!Body.Merging) Repel(body);
+            if (!Body.Merging()) Repel(body);
         }
     }
 
