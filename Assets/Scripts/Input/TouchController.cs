@@ -63,13 +63,12 @@ public class TouchController : MonoBehaviour
 
     public void PositionPerformed(Vector2 position, float time)
     {
-        Vector3 screenCoordinates = new Vector3(position.x, position.y, Camera.main.nearClipPlane);
+        Vector3 screenCoordinates = new Vector3(position.x, position.y, Space.Instance.eyeOfGod.transform.position.z);
         int space = LayerMask.GetMask("Space");
-        int interactable = LayerMask.GetMask("Interactable");
 
         Ray movePlayer = Camera.main.ScreenPointToRay(screenCoordinates);
         if (Physics.Raycast(movePlayer, out RaycastHit cameraHit, Mathf.Infinity, space)) {
-            CurrentScreenTouchPoint = new Vector3(cameraHit.point.x, 0, cameraHit.point.z);
+            CurrentScreenTouchPoint = new Vector3(cameraHit.point.x, cameraHit.point.y, 0);
         }
     }
 
@@ -78,16 +77,13 @@ public class TouchController : MonoBehaviour
 
     private IEnumerator WhileHolding(Vector2 position)
     {
-        float smoothSpeed = 6f;
         Vector3 target = new Vector3();
-        Quaternion rotation;
 
         while (!Released) {
             if (Player.Instance != null) {
-                if (Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.ship.transform.position) > 2) {
-                    target = (CurrentScreenTouchPoint - Player.Instance.ship.transform.position).normalized;
-                    rotation = Quaternion.LookRotation(target, Vector3.right);
-                    Player.Instance.ship.transform.rotation = Quaternion.Slerp(Player.Instance.ship.transform.rotation, rotation, Time.deltaTime * smoothSpeed);
+                if (Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.position) > 2) {
+                    target = (CurrentScreenTouchPoint - Player.Instance.transform.position).normalized;
+                    Player.Instance.transform.rotation = Quaternion.FromToRotation(Vector3.up, target);
                     Player.Instance.Body.AddForce(target * 0.1f);
                 }
             }
