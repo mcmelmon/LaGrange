@@ -86,8 +86,7 @@ public class TouchController : MonoBehaviour
             if (Player.Instance != null) {
                 if (Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.ship.transform.position) > 2) {
                     target = (CurrentScreenTouchPoint - Player.Instance.ship.transform.position).normalized;
-                    target.y = 0;
-                    rotation = Quaternion.LookRotation(target);
+                    rotation = Quaternion.LookRotation(target, Vector3.right);
                     Player.Instance.ship.transform.rotation = Quaternion.Slerp(Player.Instance.ship.transform.rotation, rotation, Time.deltaTime * smoothSpeed);
                     Player.Instance.Body.AddForce(target * 0.1f);
                 }

@@ -35,6 +35,11 @@ public class Body : MonoBehaviour
         SetMass(GetMass() + increase);
     }
 
+    public bool IsShip()
+    {
+        return GetComponentInParent<Player>();
+    }
+
     public float GetMass()
     {
         return Physics.mass;

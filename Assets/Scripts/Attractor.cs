@@ -45,6 +45,8 @@ public class Attractor : MonoBehaviour
         // saving Body's RemoveFromSpace the trouble of searching for
         // unconnected lines
 
+        if (other.IsShip()) return;
+
         if (Lines.ContainsKey(other)) {
             Lines[other].enabled = true;
             float scaledForce = Mathf.Sqrt(gravitation);
