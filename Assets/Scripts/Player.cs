@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public Body Body { get; set; }
 
     private int Score { get; set; }
+    private Shields Shields { get; set; }
 
 
     // Unity
@@ -24,6 +25,17 @@ public class Player : MonoBehaviour
 
         Instance = this;
         SetComponents();
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        Singularity singularity = other.transform.GetComponent<Singularity>();
+        Prize prize = other.transform.GetComponent<Prize>();
+
+        if (singularity != null) {
+            Shields.ChangeShields(-10f);
+        } else if (prize != null) {
+            Shields.ChangeShields(+10f);
+        }
     }
 
 
@@ -41,5 +53,6 @@ public class Player : MonoBehaviour
     {
         Body = GetComponent<Body>();
         Score = 0;
+        Shields = GetComponent<Shields>();
     }
 }
