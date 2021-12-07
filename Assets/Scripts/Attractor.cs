@@ -50,8 +50,8 @@ public class Attractor : MonoBehaviour
         if (Lines.ContainsKey(other)) {
             Lines[other].enabled = true;
             float scaledForce = Mathf.Sqrt(gravitation);
-            Lines[other].startWidth = scaledForce > 0.3f ? Mathf.Min(scaledForce, 2) : 0;
-            Lines[other].endWidth = scaledForce > 0.3f ? Mathf.Min(scaledForce, 2) : 0;
+            Lines[other].startWidth = scaledForce > 0.3f ? Mathf.Min(scaledForce, 1) : 0;
+            Lines[other].endWidth = scaledForce > 0.3f ? Mathf.Min(scaledForce, 1) : 0;
             Lines[other].SetPosition(0, transform.position);
             Lines[other].SetPosition(1, other.transform.position);
         } else {

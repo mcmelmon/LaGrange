@@ -41,6 +41,22 @@ public class @InputControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Touch"",
                     ""processors"": """",
                     ""interactions"": ""Hold,Press""
+                },
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""03da0705-cfe1-49b5-9792-268204d3c6de"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold,Press""
+                },
+                {
+                    ""name"": ""Double"",
+                    ""type"": ""Button"",
+                    ""id"": ""baf449a6-bc13-4d53-a42c-45bdb5c7e985"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold,Press""
                 }
             ],
             ""bindings"": [
@@ -76,6 +92,28 @@ public class @InputControls : IInputActionCollection, IDisposable
                     ""action"": ""Release"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aafbf6bc-bb3e-4bbb-9c71-2809cd7ed1c3"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c8753e75-8a14-4a5b-9d31-fcf83ec44603"",
+                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""interactions"": ""MultiTap"",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""Double"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -99,6 +137,8 @@ public class @InputControls : IInputActionCollection, IDisposable
         m_Space_Position = m_Space.FindAction("Position", throwIfNotFound: true);
         m_Space_Hold = m_Space.FindAction("Hold", throwIfNotFound: true);
         m_Space_Release = m_Space.FindAction("Release", throwIfNotFound: true);
+        m_Space_Newaction = m_Space.FindAction("New action", throwIfNotFound: true);
+        m_Space_Double = m_Space.FindAction("Double", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -151,6 +191,8 @@ public class @InputControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Space_Position;
     private readonly InputAction m_Space_Hold;
     private readonly InputAction m_Space_Release;
+    private readonly InputAction m_Space_Newaction;
+    private readonly InputAction m_Space_Double;
     public struct SpaceActions
     {
         private @InputControls m_Wrapper;
@@ -158,6 +200,8 @@ public class @InputControls : IInputActionCollection, IDisposable
         public InputAction @Position => m_Wrapper.m_Space_Position;
         public InputAction @Hold => m_Wrapper.m_Space_Hold;
         public InputAction @Release => m_Wrapper.m_Space_Release;
+        public InputAction @Newaction => m_Wrapper.m_Space_Newaction;
+        public InputAction @Double => m_Wrapper.m_Space_Double;
         public InputActionMap Get() { return m_Wrapper.m_Space; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -176,6 +220,12 @@ public class @InputControls : IInputActionCollection, IDisposable
                 @Release.started -= m_Wrapper.m_SpaceActionsCallbackInterface.OnRelease;
                 @Release.performed -= m_Wrapper.m_SpaceActionsCallbackInterface.OnRelease;
                 @Release.canceled -= m_Wrapper.m_SpaceActionsCallbackInterface.OnRelease;
+                @Newaction.started -= m_Wrapper.m_SpaceActionsCallbackInterface.OnNewaction;
+                @Newaction.performed -= m_Wrapper.m_SpaceActionsCallbackInterface.OnNewaction;
+                @Newaction.canceled -= m_Wrapper.m_SpaceActionsCallbackInterface.OnNewaction;
+                @Double.started -= m_Wrapper.m_SpaceActionsCallbackInterface.OnDouble;
+                @Double.performed -= m_Wrapper.m_SpaceActionsCallbackInterface.OnDouble;
+                @Double.canceled -= m_Wrapper.m_SpaceActionsCallbackInterface.OnDouble;
             }
             m_Wrapper.m_SpaceActionsCallbackInterface = instance;
             if (instance != null)
@@ -189,6 +239,12 @@ public class @InputControls : IInputActionCollection, IDisposable
                 @Release.started += instance.OnRelease;
                 @Release.performed += instance.OnRelease;
                 @Release.canceled += instance.OnRelease;
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
+                @Double.started += instance.OnDouble;
+                @Double.performed += instance.OnDouble;
+                @Double.canceled += instance.OnDouble;
             }
         }
     }
@@ -207,5 +263,7 @@ public class @InputControls : IInputActionCollection, IDisposable
         void OnPosition(InputAction.CallbackContext context);
         void OnHold(InputAction.CallbackContext context);
         void OnRelease(InputAction.CallbackContext context);
+        void OnNewaction(InputAction.CallbackContext context);
+        void OnDouble(InputAction.CallbackContext context);
     }
 }
