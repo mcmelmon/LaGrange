@@ -17,42 +17,16 @@ public class Singularity : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other) {
-        Singularity partner = other.transform.GetComponent<Singularity>();
+        Singularity singularity = other.transform.GetComponent<Singularity>();
 
-        if (partner != null) {
-            if (!Merging) Merge(partner);
+        if (singularity != null) {
+            if (!Merging) Merge(singularity);
         }
     }
 
     private void Start() {
-        Space.Instance.Bodies.Add(Body);
         ScaleHorizon();
-        StartWithRandomForce();
-    }
-
-    private void Update() {
-        float distanceFromPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
-        if (distanceFromPlayer > 150) RemoveFromSpace();
-    }
-
-
-    // Public
-
-    public void RemoveFromSpace()
-    {
-        LineRenderer[] lines = GetComponentsInChildren<LineRenderer>();
-
-        foreach (KeyValuePair<Body, LineRenderer> pair in Body.Attractor.Lines) {
-            Destroy(pair.Value.transform.gameObject);
-
-            if (pair.Key.Attractor.Lines.ContainsKey(Body)) {
-                Destroy(pair.Key.Attractor.Lines[Body]);
-                pair.Key.Attractor.Lines.Remove(Body);
-            }
-        }
-
-        Space.Instance.Bodies.Remove(Body);
-        Destroy(this.transform.gameObject);
+        Body.StartWithRandomForce();
     }
 
 
@@ -64,12 +38,12 @@ public class Singularity : MonoBehaviour
             other.Merging = true;
             Body.IncreaseMass(other.Body.GetMass());
             transform.position = Body.WeightedMidpoint(other.Body);
-            other.RemoveFromSpace();
+            other.Body.RemoveFromSpace();
         } else {
             Merging = true;
             other.Body.IncreaseMass(Body.GetMass());
             transform.position = Body.WeightedMidpoint(other.Body);
-            RemoveFromSpace();
+            Body.RemoveFromSpace();
         }
 
         ScaleHorizon();
@@ -86,14 +60,5 @@ public class Singularity : MonoBehaviour
         Merging = false;
 
         Body.SetMass(Random.Range(1, 10));
-    }
-
-    private void StartWithRandomForce()
-    {
-        Vector3 direction = new Vector3(Random.Range(-359, 359),Random.Range(-359, 359),Random.Range(-359, 359)).normalized;
-        float oomph =  Random.Range(7, 11);
-        Vector3 force = direction * oomph;
-
-        Body.AddForce(force, ForceMode.VelocityChange);
     }
 }

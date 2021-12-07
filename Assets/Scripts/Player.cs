@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 
     public Body Body { get; set; }
 
+    private int Score { get; set; }
+
 
     // Unity
 
@@ -25,10 +27,19 @@ public class Player : MonoBehaviour
     }
 
 
+    // Public
+
+    public void RaiseScore()
+    {
+        Score++;
+    }
+
+
     // Private
 
     private void SetComponents()
     {
         Body = GetComponent<Body>();
+        Score = 0;
     }
 }

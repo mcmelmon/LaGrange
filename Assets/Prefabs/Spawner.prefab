@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   singularityPrefab: {fileID: 6044598903165426464, guid: 260e419d29d1f4321a176175b8917ca6, type: 3}
+  prizePrefab: {fileID: 6942609491956297202, guid: b4f10270171a7465ba0172ff525ddfd1, type: 3}

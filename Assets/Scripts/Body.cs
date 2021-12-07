@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Body : MonoBehaviour
 {
+    // Inspector
+
+    public float shipForceMultiplier = 3f;
+
     // Properties
 
     public Attractor Attractor { get; set; }
@@ -17,11 +21,24 @@ public class Body : MonoBehaviour
         SetComponents();
     }
 
+    private void Start() {
+        Space.Instance.Bodies.Add(this);
+    }
+
+    private void Update() {
+        float distanceFromPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
+        if (distanceFromPlayer > 150) RemoveFromSpace();
+    }
+
 
     // Public
 
     public void AddForce(Vector3 force, ForceMode mode = ForceMode.Impulse)
     {
+        if (IsShip()) {
+            force *= shipForceMultiplier;
+        }
+
         Physics.AddForce(force, mode);
     }
 
@@ -37,7 +54,7 @@ public class Body : MonoBehaviour
 
     public bool IsShip()
     {
-        return GetComponentInParent<Player>();
+        return GetComponent<Player>();
     }
 
     public float GetMass()
@@ -50,9 +67,35 @@ public class Body : MonoBehaviour
         return (Singularity != null) ? Singularity.Merging : false;
     }
 
+    public void RemoveFromSpace()
+    {
+        LineRenderer[] lines = GetComponentsInChildren<LineRenderer>();
+
+        foreach (KeyValuePair<Body, LineRenderer> pair in Attractor.Lines) {
+            Destroy(pair.Value.transform.gameObject);
+
+            if (pair.Key.Attractor.Lines.ContainsKey(this)) {
+                Destroy(pair.Key.Attractor.Lines[this]);
+                pair.Key.Attractor.Lines.Remove(this);
+            }
+        }
+
+        Space.Instance.Bodies.Remove(this);
+        Destroy(this.transform.gameObject);
+    }
+
     public void SetMass(float mass)
     {
         Physics.mass = mass;
+    }
+
+    public void StartWithRandomForce()
+    {
+        Vector3 direction = new Vector3(Random.Range(-359, 359),Random.Range(-359, 359),Random.Range(-359, 359)).normalized;
+        float oomph =  Random.Range(7, 11);
+        Vector3 force = direction * oomph;
+
+        AddForce(force, ForceMode.VelocityChange);
     }
 
     public Vector3 WeightedMidpoint(Body other)

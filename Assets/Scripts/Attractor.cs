@@ -29,12 +29,14 @@ public class Attractor : MonoBehaviour
     private void Attract(Body other)
     {
         Vector3 direction = transform.position - other.transform.position;
+        Vector3 force;
         float distance = direction.magnitude;
 
         float gravitation = Space.Instance.G * (Body.GetMass() * other.GetMass()) / Mathf.Pow(2f * distance, 2);
-        Vector3 force = direction.normalized * gravitation;
 
-        DrawForceTo(other, gravitation);
+        force = direction.normalized * gravitation;
+
+        // DrawForceTo(other, gravitation);
 
         if (!float.IsNaN(force.x)) other.AddForce(force);
     }
