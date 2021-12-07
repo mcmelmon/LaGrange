@@ -25,14 +25,14 @@ public class Spawner : MonoBehaviour
     private Body InstantiateSpawn(Vector3 position)
     {
         GameObject prefab = Instantiate(singularityPrefab, position, Quaternion.identity);
-        prefab.transform.SetParent(transform);
+        prefab.transform.SetParent(Space.Instance.spawnPlane);
         prefab.layer = 6;
         return prefab.GetComponent<Body>();
     }
 
     private IEnumerator Spawn()
     {
-        WaitForSeconds waitFor = new WaitForSeconds(45f);
+        WaitForSeconds waitFor = new WaitForSeconds(15f);
 
         while (true) {
             InstantiateSpawn(transform.position);

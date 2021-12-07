@@ -28,6 +28,22 @@
                     "expectedControlType": "Touch",
                     "processors": "",
                     "interactions": "Hold,Press"
+                },
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "03da0705-cfe1-49b5-9792-268204d3c6de",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold,Press"
+                },
+                {
+                    "name": "Double",
+                    "type": "Button",
+                    "id": "baf449a6-bc13-4d53-a42c-45bdb5c7e985",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold,Press"
                 }
             ],
             "bindings": [
@@ -61,6 +77,28 @@
                     "processors": "",
                     "groups": "Touch",
                     "action": "Release",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aafbf6bc-bb3e-4bbb-9c71-2809cd7ed1c3",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c8753e75-8a14-4a5b-9d31-fcf83ec44603",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "MultiTap",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Double",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

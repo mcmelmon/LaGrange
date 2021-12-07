@@ -22,6 +22,7 @@ public class TouchController : MonoBehaviour
     }
 
     private void OnDisable() {
+        Finger.OnPerformedDoubleEvent -= DoublePerformed;
         Finger.OnPerformedHoldEvent -= HoldPerformed;
         Finger.OnPerformedPositionEvent -= PositionPerformed;
         Finger.OnPerformedReleaseEvent -= HoldReleased;
@@ -29,6 +30,7 @@ public class TouchController : MonoBehaviour
     }
 
     private void OnEnable() {
+        Finger.OnPerformedDoubleEvent += DoublePerformed;
         Finger.OnPerformedHoldEvent += HoldPerformed;
         Finger.OnPerformedPositionEvent += PositionPerformed;
         Finger.OnPerformedReleaseEvent += HoldReleased;
@@ -41,13 +43,18 @@ public class TouchController : MonoBehaviour
 
     // Public
 
+    public void DoublePerformed(Vector2 position, float time)
+    {
+        StartCoroutine(MoveTo());
+    }
+
     public void HoldPerformed(Vector2 position, float time)
     {
         // The user has pressed against the screen longer than 0.5 seconds.  However, the "Hold" action
         // then completes (it does not wait until the user releases, as one might expect...)
 
         Released = false;
-        StartCoroutine(WhileHolding(position));
+        StartCoroutine(WhileHolding());
     }
 
     public void HoldReleased(Vector2 position, float time)
@@ -75,16 +82,33 @@ public class TouchController : MonoBehaviour
 
     // Private
 
-    private IEnumerator WhileHolding(Vector2 position)
+    private IEnumerator MoveTo()
+    {
+        Vector3 target = new Vector3();
+        float distance = Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.localPosition);
+
+        while (Released && distance > 0.1f) {
+            if (Player.Instance != null) {
+                target = (CurrentScreenTouchPoint - Player.Instance.transform.position).normalized;
+                Player.Instance.transform.rotation = Quaternion.FromToRotation(Vector3.up, target);
+                Player.Instance.transform.position = Vector3.Lerp(Player.Instance.transform.position, CurrentScreenTouchPoint, 1f * Time.deltaTime);
+                distance = Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.localPosition);
+            }
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator WhileHolding()
     {
         Vector3 target = new Vector3();
 
         while (!Released) {
             if (Player.Instance != null) {
-                if (Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.position) > 2) {
+                if (Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.position) > 0.1f) {
                     target = (CurrentScreenTouchPoint - Player.Instance.transform.position).normalized;
                     Player.Instance.transform.rotation = Quaternion.FromToRotation(Vector3.up, target);
-                    Player.Instance.Body.AddForce(target * 0.1f);
+                    Player.Instance.transform.position = Vector3.Lerp(Player.Instance.transform.position, CurrentScreenTouchPoint, 1.5f * Time.deltaTime);
                 }
             }
 

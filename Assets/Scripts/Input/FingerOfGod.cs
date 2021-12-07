@@ -12,6 +12,9 @@ public class FingerOfGod : MonoBehaviour
 
     // Unity
 
+    public delegate void PerformedDoubleEvent(Vector2 position, float time);
+    public event PerformedDoubleEvent OnPerformedDoubleEvent;
+
     public delegate void PerformedHoldEvent(Vector2 position, float time);
     public event PerformedHoldEvent OnPerformedHoldEvent;
 
@@ -46,6 +49,7 @@ public class FingerOfGod : MonoBehaviour
     }
 
     private void Start() {
+        controls.Space.Double.performed += DoublePerformed;
         controls.Space.Hold.performed += HoldPerformed;
         controls.Space.Hold.started += HoldStarted;
         controls.Space.Position.performed += PositionPerformed;
@@ -54,6 +58,11 @@ public class FingerOfGod : MonoBehaviour
 
 
     // Private
+
+    private void DoublePerformed(InputAction.CallbackContext context)
+    {
+        if (OnPerformedDoubleEvent != null) OnPerformedDoubleEvent(controls.Space.Position.ReadValue<Vector2>(), (float)context.startTime);
+    }
 
     private void HoldPerformed(InputAction.CallbackContext context)
     {

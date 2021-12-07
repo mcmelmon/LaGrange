@@ -32,7 +32,7 @@ public class Singularity : MonoBehaviour
 
     private void Update() {
         float distanceFromPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
-        if (distanceFromPlayer > 250) RemoveFromSpace();
+        if (distanceFromPlayer > 150) RemoveFromSpace();
     }
 
 

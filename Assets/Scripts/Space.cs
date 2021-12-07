@@ -44,11 +44,10 @@ public class Space : MonoBehaviour
 
     private void Start() {
         InstantiateSpawners();
-        StartCoroutine(SmoothCameraFollowPlayer());
     }
 
     private void Update() {
-        movementPlane.position = new Vector3(Player.Instance.transform.position.x, Player.Instance.transform.position.y, movementPlane.position.z);
+        spawnPlane.transform.Rotate(0, -0.25f * Time.deltaTime, 0);
     }
 
 
@@ -70,18 +69,15 @@ public class Space : MonoBehaviour
     private void InstantiateSpawner(Vector3 position)
     {
         GameObject prefab = Instantiate(spawnerPrefab, position, Quaternion.identity);
-        prefab.transform.SetParent(spawnPlane);
         Spawners.Add(prefab.GetComponent<Spawner>());
     }
 
     private void InstantiateSpawners()
     {
-        for (int x = 1; x < 4; x++) {
-            for (int y = 1; y < 4; y++) {
-                InstantiateSpawner(new Vector3(x * separation, y * separation, 0 ));
-                InstantiateSpawner(new Vector3(x * separation, -y * separation, 0 ));
-                InstantiateSpawner(new Vector3(-x * separation, y * separation, 0 ));
-                InstantiateSpawner(new Vector3(-x * separation, -y * separation, 0 ));
+        for (int x = 0; x < 4; x++) {
+            for (int y = 0; y < 4; y++) {
+                InstantiateSpawner(new Vector3(x * separation + 15, y * separation + 55, 0 ));
+                InstantiateSpawner(new Vector3(-x * separation + 15, y * separation + 55, 0 ));
             }
         }
     }
@@ -90,25 +86,5 @@ public class Space : MonoBehaviour
     {
         Bodies = new List<Body>();
         Spawners = new List<Spawner>();
-    }
-
-    private IEnumerator SmoothCameraFollowPlayer()
-    {
-        float smoothSpeed = 1.5f;
-        Vector3 smoothedPosition = new Vector3();
-        Vector3 target = new Vector3(Player.Instance.transform.position.x, Player.Instance.transform.position.y, eyeOfGod.transform.position.z);
-        float distance = Mathf.Abs(Vector3.Distance(target, eyeOfGod.transform.position));
-
-        while (true) {
-            if (distance > 0.1f) {
-                smoothedPosition = Vector3.Lerp(eyeOfGod.transform.position, target, smoothSpeed * Time.deltaTime);
-                eyeOfGod.transform.position = smoothedPosition;
-            }
-
-            target = new Vector3(Player.Instance.transform.position.x, Player.Instance.transform.position.y, eyeOfGod.transform.position.z);
-            distance = Mathf.Abs(Vector3.Distance(target, eyeOfGod.transform.position));
-
-            yield return null;
-        }
     }
 }
