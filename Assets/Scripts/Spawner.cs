@@ -7,10 +7,7 @@ public class Spawner : MonoBehaviour
     // Inspector
 
     public GameObject singularityPrefab;
-
-    // Properties
-
-    private Body Body { get; set; }
+    public GameObject prizePrefab;
 
 
     // Unity
@@ -22,20 +19,25 @@ public class Spawner : MonoBehaviour
 
     // Private
 
-    private Body InstantiateSpawn(Vector3 position)
+    private void InstantiateSpawn(Vector3 position)
     {
-        GameObject prefab = Instantiate(singularityPrefab, position, Quaternion.identity);
+        int coinflip = Random.Range(0, 10);
+        GameObject type;
+
+        type = (coinflip <= 7) ? singularityPrefab : prizePrefab;
+
+        GameObject prefab = Instantiate(type, position, Quaternion.identity);
         prefab.transform.SetParent(Space.Instance.spawnPlane);
         prefab.layer = 6;
-        return prefab.GetComponent<Body>();
     }
 
     private IEnumerator Spawn()
     {
-        WaitForSeconds waitFor = new WaitForSeconds(15f);
+        WaitForSeconds waitFor = new WaitForSeconds(10f);
 
         while (true) {
-            InstantiateSpawn(transform.position);
+            int coinflip = Random.Range(0, 10);
+            if (coinflip <= 9) InstantiateSpawn(transform.position);
 
             yield return waitFor;
         }

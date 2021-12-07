@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 2.375284, g: 1.8462906, b: 0, a: 1}
+  m_AmbientSkyColor: {r: 3.1711905, g: 3.1711905, b: 3.1711905, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -484,6 +484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6794a0d51d3ae45d5ac69b1995ccd296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shipForceMultiplier: 3
 --- !u!1 &1410388985
 GameObject:
   m_ObjectHideFlags: 0
