@@ -16,6 +16,7 @@ public class Space : MonoBehaviour
     public GameObject linePrefab;
     public Transform movementPlane;
     public Transform spawnPlane;
+    public float rotationSpeed = -1f;
 
 
     // Properties
@@ -47,7 +48,7 @@ public class Space : MonoBehaviour
     }
 
     private void Update() {
-        spawnPlane.transform.Rotate(0, -0.25f * Time.deltaTime, 0);
+        spawnPlane.transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
     }
 
 
@@ -76,8 +77,8 @@ public class Space : MonoBehaviour
     {
         for (int x = 0; x < 2; x++) {
             for (int y = 0; y < 2; y++) {
-                InstantiateSpawner(new Vector3(x * separation + 15, y * separation + 55, 0 ));
-                InstantiateSpawner(new Vector3(-1 * (x * separation + 15), y * separation + 55, 0 ));
+                InstantiateSpawner(new Vector3(x * separation + 15, y * separation + 60, 0 ));
+                InstantiateSpawner(new Vector3(-1 * (x * separation + 15), y * separation + 60, 0 ));
             }
         }
     }

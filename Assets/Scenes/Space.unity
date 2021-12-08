@@ -568,7 +568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0f7b2b5790a47ffbc8c6b10561ae7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreTextElement: {fileID: 1094146130}
+  timeTextElement: {fileID: 1094146130}
 --- !u!4 &431213405
 Transform:
   m_ObjectHideFlags: 0
@@ -837,7 +837,7 @@ GameObject:
   - component: {fileID: 1094146131}
   - component: {fileID: 1094146130}
   m_Layer: 0
-  m_Name: Score
+  m_Name: Time
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1091,13 +1091,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnerPrefab: {fileID: 8722233512899701663, guid: 97bdee01313404f3794c6df39f7da079, type: 3}
-  G: 1.17
-  E: 0.89
+  G: 3.15
+  E: 1.27
   separation: 18
   eyeOfGod: {fileID: 323978119}
   linePrefab: {fileID: 3377244917989472239, guid: 859c8978b324044b3bc9039e9428ec04, type: 3}
   movementPlane: {fileID: 2126963609}
   spawnPlane: {fileID: 1896694385}
+  rotationSpeed: -1
 --- !u!4 &1410388987
 Transform:
   m_ObjectHideFlags: 0
@@ -1150,7 +1151,7 @@ GameObject:
   - component: {fileID: 1442606718}
   - component: {fileID: 1442606717}
   m_Layer: 0
-  m_Name: ScoreLabel
+  m_Name: TimeLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1195,7 +1196,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Score
+  m_text: Time
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
