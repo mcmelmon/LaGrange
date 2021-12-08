@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    // Inspector
+
+    public TextMeshProUGUI scoreTextElement;
+
+
     // Properties
 
     public static Player Instance { get; set; }
-
     public Body Body { get; set; }
 
     private int Score { get; set; }
@@ -44,6 +50,7 @@ public class Player : MonoBehaviour
     public void RaiseScore()
     {
         Score++;
+        scoreTextElement.text = Score.ToString();
     }
 
 
