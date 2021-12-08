@@ -22,7 +22,6 @@ public class Prize : MonoBehaviour
         if (singularity != null) {
             Body.RemoveFromSpace();
         } else if (player != null) {
-            Player.Instance.RaiseScore();
             Body.RemoveFromSpace();
         }
     }

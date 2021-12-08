@@ -8,16 +8,18 @@ public class Player : MonoBehaviour
 {
     // Inspector
 
-    public TextMeshProUGUI scoreTextElement;
+    public TextMeshProUGUI timeTextElement;
 
 
     // Properties
 
     public static Player Instance { get; set; }
     public Body Body { get; set; }
+    public int ElapsedTime { get; set; }
+    public float SpawnTime { get; set; }
 
-    private int Score { get; set; }
     private Shields Shields { get; set; }
+
 
 
     // Unity
@@ -44,22 +46,34 @@ public class Player : MonoBehaviour
         }
     }
 
-
-    // Public
-
-    public void RaiseScore()
-    {
-        Score++;
-        scoreTextElement.text = Score.ToString();
+    private void Start() {
+        StartCoroutine(IncrementTime());
     }
 
 
     // Private
 
+    private IEnumerator IncrementTime()
+    {
+        WaitForSeconds waitFor = new WaitForSeconds(6f);
+
+        while (true) {
+            yield return waitFor;
+            if (ElapsedTime % 5 == 0) {
+                Space.Instance.rotationSpeed -= 0.3f; // rotation direction is clockwise, so negative speed
+                SpawnTime = Mathf.Max(SpawnTime - Mathf.Log(-Space.Instance.rotationSpeed) / 2f, 1.3f);
+            }
+            ElapsedTime++;
+            timeTextElement.text = ElapsedTime.ToString();
+        }
+
+    }
+
     private void SetComponents()
     {
         Body = GetComponent<Body>();
-        Score = 0;
+        ElapsedTime = 0;
         Shields = GetComponent<Shields>();
+        SpawnTime = 4f;
     }
 }

@@ -28,7 +28,7 @@ public class Shields : MonoBehaviour
 
     public void ChangeShields(float amount)
     {
-        CurrentShields += amount;
+        CurrentShields = Mathf.Min(maximumShield, CurrentShields + amount);
 
         float shieldPercentage = CurrentShields / maximumShield;
         OnShieldChanged(shieldPercentage);

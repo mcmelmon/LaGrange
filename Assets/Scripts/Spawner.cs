@@ -33,13 +33,11 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator Spawn()
     {
-        WaitForSeconds waitFor = new WaitForSeconds(10f);
-
         while (true) {
             int coinflip = Random.Range(0, 10);
             if (coinflip <= 9) InstantiateSpawn(transform.position);
 
-            yield return waitFor;
+            yield return new WaitForSeconds(Player.Instance.SpawnTime);
         }
     }
 }
