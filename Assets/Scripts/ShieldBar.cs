@@ -10,13 +10,14 @@ public class ShieldBar : MonoBehaviour
     public float changeSpeed = 0.5f;
 
     public Slider shieldSlider;
+    public Shields playerShields;
 
 
     // Unity
 
     private void Awake() {
         shieldSlider.value = 1f;
-        GetComponentInParent<Shields>().OnShieldChanged += HandleShieldChanged;
+        playerShields.OnShieldChanged += HandleShieldChanged;
     }
 
 
