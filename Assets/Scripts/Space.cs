@@ -75,10 +75,10 @@ public class Space : MonoBehaviour
 
     private void InstantiateSpawners()
     {
-        for (int x = 0; x < 2; x++) {
+        for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 2; y++) {
-                InstantiateSpawner(new Vector3(x * separation + 15, y * separation + 60, 0 ));
-                InstantiateSpawner(new Vector3(-1 * (x * separation + 15), y * separation + 60, 0 ));
+                InstantiateSpawner(new Vector3((x * separation) + 5, y * separation + 60, 0 ));
+                InstantiateSpawner(new Vector3(-1 * ((x * separation) + 5), y * separation + 60, 0 ));
             }
         }
     }

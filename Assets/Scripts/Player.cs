@@ -8,16 +8,17 @@ public class Player : MonoBehaviour
 {
     // Inspector
 
-    public TextMeshProUGUI timeTextElement;
+    public TextMeshProUGUI scoreTextElement;
 
 
     // Properties
 
     public static Player Instance { get; set; }
     public Body Body { get; set; }
-    public int ElapsedTime { get; set; }
+    public int Score { get; set; }
     public float SpawnTime { get; set; }
 
+    private float ElapsedTime { get; set; }
     private Shields Shields { get; set; }
 
 
@@ -40,9 +41,11 @@ public class Player : MonoBehaviour
         Prize prize = other.transform.GetComponent<Prize>();
 
         if (singularity != null) {
-            Shields.ChangeShields(-10f);
+            Shields.ChangeShields(singularity.Damage());
         } else if (prize != null) {
-            Shields.ChangeShields(+10f);
+            Score++;
+            scoreTextElement.text = Score.ToString();
+            Shields.ChangeShields(prize.shieldBoost);
         }
     }
 
@@ -60,11 +63,10 @@ public class Player : MonoBehaviour
         while (true) {
             yield return waitFor;
             if (ElapsedTime % 5 == 0) {
-                Space.Instance.rotationSpeed -= 0.3f; // rotation direction is clockwise, so negative speed
+                // Space.Instance.rotationSpeed -= 0.3f; // rotation direction is clockwise, so negative speed
                 SpawnTime = Mathf.Max(SpawnTime - Mathf.Log(-Space.Instance.rotationSpeed) / 2f, 1.3f);
             }
             ElapsedTime++;
-            timeTextElement.text = ElapsedTime.ToString();
         }
 
     }
@@ -72,7 +74,8 @@ public class Player : MonoBehaviour
     private void SetComponents()
     {
         Body = GetComponent<Body>();
-        ElapsedTime = 0;
+        ElapsedTime = 0f;
+        Score = 0;
         Shields = GetComponent<Shields>();
         SpawnTime = 4f;
     }
