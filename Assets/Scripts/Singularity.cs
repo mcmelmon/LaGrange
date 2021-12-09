@@ -29,6 +29,12 @@ public class Singularity : MonoBehaviour
         Body.StartWithRandomForce();
     }
 
+    // Public
+
+    public float Damage()
+    {
+        return -1 * Mathf.Min(Body.GetMass(), 25f);
+    }
 
     // Private
 

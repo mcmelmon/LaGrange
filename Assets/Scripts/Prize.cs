@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Prize : MonoBehaviour
 {
+    // Inspector
+
+    public int score = 1;
+    public int shieldBoost = 10;
+
+
     // Properties
 
     public Body Body { get; set; }
