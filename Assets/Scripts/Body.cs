@@ -42,14 +42,9 @@ public class Body : MonoBehaviour
         Physics.AddForce(force, mode);
     }
 
-    public void DecreseMass(float reduction)
+    public void ChangeMass(float amount)
     {
-        SetMass(GetMass() - reduction);
-    }
-
-    public void IncreaseMass(float increase)
-    {
-        SetMass(GetMass() + increase);
+        SetMass(GetMass() + amount);
     }
 
     public bool IsShip()

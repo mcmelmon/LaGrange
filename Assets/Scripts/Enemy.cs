@@ -21,6 +21,17 @@ public class Enemy : MonoBehaviour
         SetComponents();
     }
 
+    private void OnCollisionEnter(Collision other) {
+        Singularity singularity = other.transform.GetComponent<Singularity>();
+        Projectile projectile = other.transform.GetComponent<Projectile>();
+
+        if (singularity != null) {
+            Body.RemoveFromSpace();
+        } else if (projectile != null) {
+            projectile.Body.RemoveFromSpace();
+        }
+    }
+
     private void Start() {
         StartCoroutine(Attack());
         StartCoroutine(Move());

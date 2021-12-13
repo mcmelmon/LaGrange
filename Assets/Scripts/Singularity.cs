@@ -42,12 +42,12 @@ public class Singularity : MonoBehaviour
     {
         if (Body.GetMass() > other.Body.GetMass()) {
             other.Merging = true;
-            Body.IncreaseMass(other.Body.GetMass());
+            Body.ChangeMass(other.Body.GetMass());
             transform.position = Body.WeightedMidpoint(other.Body);
             other.Body.RemoveFromSpace();
         } else {
             Merging = true;
-            other.Body.IncreaseMass(Body.GetMass());
+            other.Body.ChangeMass(Body.GetMass());
             transform.position = Body.WeightedMidpoint(other.Body);
             Body.RemoveFromSpace();
         }

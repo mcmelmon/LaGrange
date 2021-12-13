@@ -22,6 +22,7 @@ public class Projectile : MonoBehaviour
         Singularity singularity = other.transform.GetComponent<Singularity>();
 
         if (singularity != null) {
+            singularity.Body.ChangeMass(1);
             Body.RemoveFromSpace();
         }
     }
