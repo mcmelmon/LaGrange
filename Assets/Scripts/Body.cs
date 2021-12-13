@@ -42,14 +42,9 @@ public class Body : MonoBehaviour
         Physics.AddForce(force, mode);
     }
 
-    public void DecreseMass(float reduction)
+    public void ChangeMass(float amount)
     {
-        SetMass(GetMass() - reduction);
-    }
-
-    public void IncreaseMass(float increase)
-    {
-        SetMass(GetMass() + increase);
+        SetMass(GetMass() + amount);
     }
 
     public bool IsShip()
@@ -71,12 +66,14 @@ public class Body : MonoBehaviour
     {
         LineRenderer[] lines = GetComponentsInChildren<LineRenderer>();
 
-        foreach (KeyValuePair<Body, LineRenderer> pair in Attractor.Lines) {
-            Destroy(pair.Value.transform.gameObject);
+        if (Attractor != null) {
+            foreach (KeyValuePair<Body, LineRenderer> pair in Attractor.Lines) {
+                Destroy(pair.Value.transform.gameObject);
 
-            if (pair.Key.Attractor.Lines.ContainsKey(this)) {
-                Destroy(pair.Key.Attractor.Lines[this]);
-                pair.Key.Attractor.Lines.Remove(this);
+                if (pair.Key.Attractor.Lines.ContainsKey(this)) {
+                    Destroy(pair.Key.Attractor.Lines[this]);
+                    pair.Key.Attractor.Lines.Remove(this);
+                }
             }
         }
 

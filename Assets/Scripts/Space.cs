@@ -8,7 +8,8 @@ public class Space : MonoBehaviour
 {
     // Inspector
 
-    public GameObject spawnerPrefab;
+    public GameObject singularitySpawnerPrefab;
+    public GameObject enemySpawnerPrefab;
     public float G = 5f;
     public float E = 1.5f;
     public float separation = 10f;
@@ -23,9 +24,10 @@ public class Space : MonoBehaviour
 
     public static Space Instance { get; set; }
 
-    public List<Spawner> Spawners { get; set; }
-
     public List<Body> Bodies { get; set; }
+    public List<SpawnerEnemy> EnemySpawners { get; set; }
+    public List<SpawnerSingularity> SingularitySpawners { get; set; }
+    public float SpawnTime { get; set; }
 
     private IEnumerator MoveCameraRoutine { get; set; }
 
@@ -44,7 +46,8 @@ public class Space : MonoBehaviour
     }
 
     private void Start() {
-        InstantiateSpawners();
+        InstantiateEnemySpawners();
+        InstantiateSingularitySpawners();
     }
 
     private void Update() {
@@ -67,18 +70,35 @@ public class Space : MonoBehaviour
 
     // Private
 
-    private void InstantiateSpawner(Vector3 position)
+    private void InstantiateEnemySpawner(Vector3 position)
     {
-        GameObject prefab = Instantiate(spawnerPrefab, position, Quaternion.identity);
-        Spawners.Add(prefab.GetComponent<Spawner>());
+        GameObject prefab = Instantiate(enemySpawnerPrefab, position, Quaternion.identity);
+        EnemySpawners.Add(prefab.GetComponent<SpawnerEnemy>());
     }
 
-    private void InstantiateSpawners()
+    private void InstantiateEnemySpawners()
     {
         for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 2; y++) {
-                InstantiateSpawner(new Vector3((x * separation) + 5, y * separation + 60, 0 ));
-                InstantiateSpawner(new Vector3(-1 * ((x * separation) + 5), y * separation + 60, 0 ));
+            for (int y = 0; y < 1; y++) {
+                InstantiateEnemySpawner(new Vector3((x * separation) + 5, -1 * (y * separation + 60), 0 ));
+                InstantiateEnemySpawner(new Vector3(-1 * ((x * separation) + 5), -1 * (y * separation + 60), 0 ));
+            }
+        }
+    }
+
+
+    private void InstantiateSingularitySpawner(Vector3 position)
+    {
+        GameObject prefab = Instantiate(singularitySpawnerPrefab, position, Quaternion.identity);
+        SingularitySpawners.Add(prefab.GetComponent<SpawnerSingularity>());
+    }
+
+    private void InstantiateSingularitySpawners()
+    {
+        for (int x = 0; x < 2; x++) {
+            for (int y = 0; y < 1; y++) {
+                InstantiateSingularitySpawner(new Vector3((x * separation) + 5, y * separation + 60, 0 ));
+                InstantiateSingularitySpawner(new Vector3(-1 * ((x * separation) + 5), y * separation + 60, 0 ));
             }
         }
     }
@@ -86,6 +106,8 @@ public class Space : MonoBehaviour
     private void SetComponents()
     {
         Bodies = new List<Body>();
-        Spawners = new List<Spawner>();
+        EnemySpawners = new List<SpawnerEnemy>();
+        SingularitySpawners = new List<SpawnerSingularity>();
+        SpawnTime = 4f;
     }
 }
