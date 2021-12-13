@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     // Inspector
 
     public Projectile projectilePrefab;
+    public float enginePower = 2.5f;
 
 
     // Properties
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour
 
     private void Start() {
         StartCoroutine(Attack());
+        StartCoroutine(Move());
     }
 
     // Public
@@ -42,9 +44,15 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator Move()
     {
-        // track Player
+        Vector3 direction = (Player.Instance.transform.position - transform.position).normalized;
+        WaitForSeconds waitFor = new WaitForSeconds(1f);
 
         while (true) {
+            if (Vector3.Distance(transform.position, Player.Instance.transform.position) > 5f) {
+                direction = (Player.Instance.transform.position - transform.position).normalized;
+                Body.AddForce(direction * enginePower);
+            }
+
             yield return null;
         }
     }

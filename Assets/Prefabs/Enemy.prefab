@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2671869485003618735}
   - component: {fileID: 2138698923665014518}
   - component: {fileID: 3050620627171927513}
+  - component: {fileID: 3347034724581820656}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -108,8 +109,8 @@ Rigidbody:
   m_GameObject: {fileID: 5899321523624541329}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 1
+  m_AngularDrag: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -153,3 +154,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 7094688166459430459, guid: cdb4f3a085fdd44769e92e6db9aa8a5b, type: 3}
+  enginePower: 0.1
+--- !u!114 &3347034724581820656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5899321523624541329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb279e11c40fb4ae886ea39fe9583527, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
