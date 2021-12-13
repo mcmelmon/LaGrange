@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         Singularity singularity = other.transform.GetComponent<Singularity>();
         Prize prize = other.transform.GetComponent<Prize>();
+        Projectile projectile = other.transform.GetComponent<Projectile>();
 
         if (singularity != null) {
             Shields.ChangeShields(singularity.Damage());
@@ -45,6 +46,9 @@ public class Player : MonoBehaviour
             Score++;
             scoreTextElement.text = Score.ToString();
             Shields.ChangeShields(prize.shieldBoost);
+        } else if (projectile != null) {
+            Shields.ChangeShields(-projectile.damage);
+            projectile.Body.RemoveFromSpace();
         }
     }
 

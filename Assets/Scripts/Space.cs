@@ -95,8 +95,8 @@ public class Space : MonoBehaviour
 
     private void InstantiateSingularitySpawners()
     {
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 2; y++) {
+        for (int x = 0; x < 2; x++) {
+            for (int y = 0; y < 1; y++) {
                 InstantiateSingularitySpawner(new Vector3((x * separation) + 5, y * separation + 60, 0 ));
                 InstantiateSingularitySpawner(new Vector3(-1 * ((x * separation) + 5), y * separation + 60, 0 ));
             }

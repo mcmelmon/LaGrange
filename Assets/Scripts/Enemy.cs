@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     // Inspector
 
-    public Projectile projectilePrefab;
+    public GameObject projectilePrefab;
     public float enginePower = 2.5f;
 
 
@@ -38,17 +38,24 @@ public class Enemy : MonoBehaviour
         WaitForSeconds waitFor = new WaitForSeconds(3f);
 
         while (true) {
+            InstantiateProjectile();
             yield return waitFor;
         }
+    }
+
+    private void InstantiateProjectile()
+    {
+        Vector3 direction = (Player.Instance.transform.position - transform.position).normalized;
+        Vector3 point = transform.position + direction * 4.5f;
+        GameObject prefab = Instantiate(projectilePrefab, point, Quaternion.identity);
     }
 
     private IEnumerator Move()
     {
         Vector3 direction = (Player.Instance.transform.position - transform.position).normalized;
-        WaitForSeconds waitFor = new WaitForSeconds(1f);
 
         while (true) {
-            if (Vector3.Distance(transform.position, Player.Instance.transform.position) > 5f) {
+            if (Vector3.Distance(transform.position, Player.Instance.transform.position) > 10f) {
                 direction = (Player.Instance.transform.position - transform.position).normalized;
                 Body.AddForce(direction * enginePower);
             }
