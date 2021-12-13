@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public class SpawnerSingularity : MonoBehaviour
 {
     // Inspector
 
@@ -33,11 +33,13 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator Spawn()
     {
+        WaitForSeconds waitFor = new WaitForSeconds(Space.Instance.SpawnTime);
+
         while (true) {
             int coinflip = Random.Range(0, 10);
             if (coinflip <= 9) InstantiateSpawn(transform.position);
 
-            yield return new WaitForSeconds(Player.Instance.SpawnTime);
+            yield return waitFor;
         }
     }
 }

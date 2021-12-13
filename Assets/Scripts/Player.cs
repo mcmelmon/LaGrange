@@ -16,7 +16,6 @@ public class Player : MonoBehaviour
     public static Player Instance { get; set; }
     public Body Body { get; set; }
     public int Score { get; set; }
-    public float SpawnTime { get; set; }
 
     private float ElapsedTime { get; set; }
     private Shields Shields { get; set; }
@@ -63,8 +62,7 @@ public class Player : MonoBehaviour
         while (true) {
             yield return waitFor;
             if (ElapsedTime % 5 == 0) {
-                // Space.Instance.rotationSpeed -= 0.3f; // rotation direction is clockwise, so negative speed
-                SpawnTime = Mathf.Max(SpawnTime - Mathf.Log(-Space.Instance.rotationSpeed) / 2f, 1.3f);
+                Space.Instance.SpawnTime = Mathf.Max(Space.Instance.SpawnTime - Mathf.Log(-Space.Instance.rotationSpeed) / 2f, 1.3f);
             }
             ElapsedTime++;
         }
@@ -77,6 +75,5 @@ public class Player : MonoBehaviour
         ElapsedTime = 0f;
         Score = 0;
         Shields = GetComponent<Shields>();
-        SpawnTime = 4f;
     }
 }

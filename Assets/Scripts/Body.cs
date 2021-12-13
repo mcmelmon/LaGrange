@@ -71,12 +71,14 @@ public class Body : MonoBehaviour
     {
         LineRenderer[] lines = GetComponentsInChildren<LineRenderer>();
 
-        foreach (KeyValuePair<Body, LineRenderer> pair in Attractor.Lines) {
-            Destroy(pair.Value.transform.gameObject);
+        if (Attractor != null) {
+            foreach (KeyValuePair<Body, LineRenderer> pair in Attractor.Lines) {
+                Destroy(pair.Value.transform.gameObject);
 
-            if (pair.Key.Attractor.Lines.ContainsKey(this)) {
-                Destroy(pair.Key.Attractor.Lines[this]);
-                pair.Key.Attractor.Lines.Remove(this);
+                if (pair.Key.Attractor.Lines.ContainsKey(this)) {
+                    Destroy(pair.Key.Attractor.Lines[this]);
+                    pair.Key.Attractor.Lines.Remove(this);
+                }
             }
         }
 
