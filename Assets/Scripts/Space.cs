@@ -50,10 +50,6 @@ public class Space : MonoBehaviour
         InstantiateSingularitySpawners();
     }
 
-    private void Update() {
-        spawnPlane.transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
-    }
-
 
     // Public
 
@@ -78,10 +74,12 @@ public class Space : MonoBehaviour
 
     private void InstantiateEnemySpawners()
     {
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 1; y++) {
-                InstantiateEnemySpawner(new Vector3((x * separation) + 5, -1 * (y * separation + 60), 0 ));
-                InstantiateEnemySpawner(new Vector3(-1 * ((x * separation) + 5), -1 * (y * separation + 60), 0 ));
+        for (int x = 0; x < 1; x++) {
+            for (int y = 0; y < 2; y++) {
+                InstantiateEnemySpawner(new Vector3((x * separation) + 90, (y * separation + 5), 0 ));
+                InstantiateEnemySpawner(new Vector3(((x * separation) + 90), -1 * (y * separation + 5), 0 ));
+                InstantiateEnemySpawner(new Vector3(-1 * (x * separation + 90), (y * separation + 5), 0 ));
+                InstantiateEnemySpawner(new Vector3(-1 * ((x * separation) + 90), -1 * (y * separation + 5), 0 ));
             }
         }
     }
@@ -95,10 +93,12 @@ public class Space : MonoBehaviour
 
     private void InstantiateSingularitySpawners()
     {
-        for (int x = 0; x < 2; x++) {
+        for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 1; y++) {
-                InstantiateSingularitySpawner(new Vector3((x * separation) + 5, y * separation + 60, 0 ));
-                InstantiateSingularitySpawner(new Vector3(-1 * ((x * separation) + 5), y * separation + 60, 0 ));
+                InstantiateSingularitySpawner(new Vector3((x * separation) + 5, y * separation + 90, 0 ));
+                InstantiateSingularitySpawner(new Vector3(-1 * ((x * separation) + 5), y * separation + 90, 0 ));
+                InstantiateSingularitySpawner(new Vector3((x * separation) + 5, -1 * (y * separation + 90), 0 ));
+                InstantiateSingularitySpawner(new Vector3(-1 * ((x * separation) + 5), -1 * (y * separation + 90), 0 ));
             }
         }
     }

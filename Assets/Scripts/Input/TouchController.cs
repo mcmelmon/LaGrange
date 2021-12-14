@@ -82,13 +82,18 @@ public class TouchController : MonoBehaviour
 
     // Private
 
+    private bool InUniverse()
+    {
+        return Vector3.Distance(CurrentScreenTouchPoint, Space.Instance.transform.position) < 80f;
+    }
+
     private IEnumerator MoveTo()
     {
         Vector3 target = new Vector3();
         float distance = Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.localPosition);
 
         while (Released && distance > 0.1f) {
-            if (Player.Instance != null) {
+            if (Player.Instance != null && InUniverse()) {
                 target = (CurrentScreenTouchPoint - Player.Instance.transform.position).normalized;
                 Player.Instance.transform.rotation = Quaternion.FromToRotation(Vector3.up, target);
                 Player.Instance.transform.position = Vector3.Lerp(Player.Instance.transform.position, CurrentScreenTouchPoint, 1f * Time.deltaTime);
@@ -104,7 +109,7 @@ public class TouchController : MonoBehaviour
         Vector3 target = new Vector3();
 
         while (!Released) {
-            if (Player.Instance != null) {
+            if (Player.Instance != null && InUniverse()) {
                 if (Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.position) > 0.1f) {
                     target = (CurrentScreenTouchPoint - Player.Instance.transform.position).normalized;
                     Player.Instance.transform.rotation = Quaternion.FromToRotation(Vector3.up, target);

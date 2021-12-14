@@ -88,9 +88,10 @@ public class Body : MonoBehaviour
 
     public void StartWithRandomForce()
     {
-        Vector3 direction = new Vector3(Random.Range(-359, 359),Random.Range(-359, 359),Random.Range(-359, 359)).normalized;
+        Vector3 randomDirection = new Vector3(Random.Range(-359, 359),Random.Range(-359, 359),Random.Range(-359, 359)).normalized;
+        Vector3 towardCenter = (Space.Instance.transform.position - transform.position).normalized * 1.05f;
         float oomph =  Random.Range(7, 11);
-        Vector3 force = direction * oomph;
+        Vector3 force = (randomDirection + towardCenter) * oomph;
 
         AddForce(force, ForceMode.VelocityChange);
     }
