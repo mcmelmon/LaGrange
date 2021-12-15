@@ -10,6 +10,11 @@ public class SpawnerSingularity : MonoBehaviour
     public GameObject prizePrefab;
 
 
+    // Properties
+
+    private Singularity Singularity { get; set; }
+
+
     // Unity
 
     private void Start() {
@@ -24,11 +29,12 @@ public class SpawnerSingularity : MonoBehaviour
         int coinflip = Random.Range(0, 10);
         GameObject type;
 
-        type = (coinflip <= 7) ? singularityPrefab : prizePrefab;
+        type = (coinflip <= 8) ? singularityPrefab : prizePrefab;
 
         GameObject prefab = Instantiate(type, position, Quaternion.identity);
         prefab.transform.SetParent(Space.Instance.spawnPlane);
         prefab.layer = 6;
+        Singularity = prefab.GetComponent<Singularity>();
     }
 
     private IEnumerator Spawn()
@@ -36,8 +42,10 @@ public class SpawnerSingularity : MonoBehaviour
         WaitForSeconds waitFor = new WaitForSeconds(Space.Instance.SpawnTime);
 
         while (true) {
-            int coinflip = Random.Range(0, 10);
-            if (coinflip <= 9) InstantiateSpawn(transform.position);
+            if (Singularity == null) {
+                int coinflip = Random.Range(0, 10);
+                if (coinflip <= 9) InstantiateSpawn(transform.position);
+            }
 
             yield return waitFor;
         }

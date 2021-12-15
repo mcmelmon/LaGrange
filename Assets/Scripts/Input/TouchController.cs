@@ -82,17 +82,30 @@ public class TouchController : MonoBehaviour
 
     // Private
 
+    private bool InUniverse()
+    {
+        return Vector3.Distance(Space.Instance.transform.position, Player.Instance.transform.position) < 100f;
+    }
+
+    private float MoveTowardPoint(Vector3 point)
+    {
+        Vector3 target = (point - Player.Instance.transform.position).normalized;
+        Player.Instance.transform.rotation = Quaternion.FromToRotation(Vector3.up, target);
+        Player.Instance.transform.position = Vector3.Lerp(Player.Instance.transform.position, point, 1f * Time.deltaTime);
+        return Vector3.Distance(point, Player.Instance.transform.localPosition);
+    }
+
     private IEnumerator MoveTo()
     {
-        Vector3 target = new Vector3();
         float distance = Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.localPosition);
 
         while (Released && distance > 0.1f) {
             if (Player.Instance != null) {
-                target = (CurrentScreenTouchPoint - Player.Instance.transform.position).normalized;
-                Player.Instance.transform.rotation = Quaternion.FromToRotation(Vector3.up, target);
-                Player.Instance.transform.position = Vector3.Lerp(Player.Instance.transform.position, CurrentScreenTouchPoint, 1f * Time.deltaTime);
-                distance = Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.localPosition);
+                if (InUniverse()) {
+                    distance = MoveTowardPoint(CurrentScreenTouchPoint);
+                } else {
+                    Player.Instance.transform.position = Vector3.Lerp(Player.Instance.transform.position, Space.Instance.transform.position, 1f * Time.deltaTime);
+                }
             }
 
             yield return null;
@@ -101,14 +114,14 @@ public class TouchController : MonoBehaviour
 
     private IEnumerator WhileHolding()
     {
-        Vector3 target = new Vector3();
+        float distance = Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.localPosition);
 
-        while (!Released) {
+        while (!Released && distance > 0.1f) {
             if (Player.Instance != null) {
-                if (Vector3.Distance(CurrentScreenTouchPoint, Player.Instance.transform.position) > 0.1f) {
-                    target = (CurrentScreenTouchPoint - Player.Instance.transform.position).normalized;
-                    Player.Instance.transform.rotation = Quaternion.FromToRotation(Vector3.up, target);
-                    Player.Instance.transform.position = Vector3.Lerp(Player.Instance.transform.position, CurrentScreenTouchPoint, 1.5f * Time.deltaTime);
+                if (InUniverse()) {
+                    distance = MoveTowardPoint(CurrentScreenTouchPoint);
+                } else {
+                    Player.Instance.transform.position = Vector3.Lerp(Player.Instance.transform.position, Space.Instance.transform.position, 1f * Time.deltaTime);
                 }
             }
 

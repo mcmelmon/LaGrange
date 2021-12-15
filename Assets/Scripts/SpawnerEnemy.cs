@@ -9,6 +9,11 @@ public class SpawnerEnemy : MonoBehaviour
     public GameObject enemyPrefab;
 
 
+    // Properties
+
+    private Enemy Enemy { get; set; }
+
+
     // Unity
 
     private void Start() {
@@ -24,6 +29,7 @@ public class SpawnerEnemy : MonoBehaviour
 
         GameObject prefab = Instantiate(enemyPrefab, position, Quaternion.identity);
         prefab.layer = 6;
+        Enemy = prefab.GetComponent<Enemy>();
     }
 
     private IEnumerator Spawn()
@@ -31,8 +37,10 @@ public class SpawnerEnemy : MonoBehaviour
         WaitForSeconds waitFor = new WaitForSeconds(Space.Instance.SpawnTime * 5f);
 
         while (true) {
-            int coinflip = Random.Range(0, 10);
-            if (coinflip <= 2) InstantiateSpawn(transform.position);
+            if (Enemy == null) {
+                int coinflip = Random.Range(0, 10);
+                if (coinflip <= 1) InstantiateSpawn(transform.position);
+            }
 
             yield return waitFor;
         }

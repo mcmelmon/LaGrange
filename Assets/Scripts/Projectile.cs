@@ -20,9 +20,12 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) {
         Singularity singularity = other.transform.GetComponent<Singularity>();
+        Projectile projectile = other.transform.GetComponent<Projectile>();
 
         if (singularity != null) {
             singularity.Body.ChangeMass(1);
+            Body.RemoveFromSpace();
+        } else if (projectile != null) {
             Body.RemoveFromSpace();
         }
     }
