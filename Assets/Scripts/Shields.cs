@@ -40,6 +40,11 @@ public class Shields : MonoBehaviour
         OnShieldChanged(shieldPercentage);
     }
 
+    public bool Empty()
+    {
+        return CurrentShields <= 0;
+    }
+
 
     // Private
 

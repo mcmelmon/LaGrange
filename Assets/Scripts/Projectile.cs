@@ -34,6 +34,10 @@ public class Projectile : MonoBehaviour
         StartCoroutine(Move());
     }
 
+    private void Update() {
+        if (!Space.Instance.Playing) Body.RemoveFromSpace();
+    }
+
 
     // Private
 
@@ -42,7 +46,7 @@ public class Projectile : MonoBehaviour
         Vector3 direction = (Player.Instance.transform.position - transform.position).normalized;
 
         while (true) {
-            if (Vector3.Distance(transform.position, Player.Instance.transform.position) > 10f) {
+            if (Player.Instance != null && Vector3.Distance(transform.position, Player.Instance.transform.position) > 10f) {
                 direction = (Player.Instance.transform.position - transform.position).normalized;
                 Body.AddForce(direction * speed);
             }

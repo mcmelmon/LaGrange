@@ -50,10 +50,27 @@ public class Player : MonoBehaviour
             Shields.ChangeShields(-projectile.damage);
             projectile.Body.RemoveFromSpace();
         }
+
+        if (Shields.Empty()) {
+            Space.Instance.EndGame();
+        }
     }
 
     private void Start() {
         StartCoroutine(IncrementTime());
+    }
+
+
+    // Public
+
+    public void Hide()
+    {
+        transform.gameObject.SetActive(false);
+    }
+
+    public void Reset()
+    {
+        Shields.ChangeShields(100);
     }
 
 

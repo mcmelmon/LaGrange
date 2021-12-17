@@ -41,7 +41,7 @@ public class SpawnerSingularity : MonoBehaviour
     {
         WaitForSeconds waitFor = new WaitForSeconds(Space.Instance.SpawnTime);
 
-        while (true) {
+        while (Space.Instance.Playing) {
             if (Singularity == null) {
                 int coinflip = Random.Range(0, 10);
                 if (coinflip <= 9) InstantiateSpawn(transform.position);

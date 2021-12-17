@@ -56,17 +56,19 @@ public class Enemy : MonoBehaviour
 
     private void InstantiateProjectile()
     {
-        Vector3 direction = (Player.Instance.transform.position - transform.position).normalized;
-        Vector3 point = transform.position + direction * 4.5f;
-        GameObject prefab = Instantiate(projectilePrefab, point, Quaternion.identity);
+        if (Player.Instance != null) {
+            Vector3 direction = (Player.Instance.transform.position - transform.position).normalized;
+            Vector3 point = transform.position + direction * 4.5f;
+            GameObject prefab = Instantiate(projectilePrefab, point, Quaternion.identity);
+        }
     }
 
     private IEnumerator Move()
     {
         Vector3 direction = (Player.Instance.transform.position - transform.position).normalized;
 
-        while (true) {
-            if (Vector3.Distance(transform.position, Player.Instance.transform.position) > 10f) {
+        while (Space.Instance.Playing) {
+            if (Player.Instance != null && Vector3.Distance(transform.position, Player.Instance.transform.position) > 10f) {
                 direction = (Player.Instance.transform.position - transform.position).normalized;
                 Body.AddForce(direction * enginePower);
             }

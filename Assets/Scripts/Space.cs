@@ -18,6 +18,7 @@ public class Space : MonoBehaviour
     public Transform movementPlane;
     public Transform spawnPlane;
     public float rotationSpeed = -1f;
+    public GameObject gamePanel;
 
 
     // Properties
@@ -26,6 +27,7 @@ public class Space : MonoBehaviour
 
     public List<Body> Bodies { get; set; }
     public List<SpawnerEnemy> EnemySpawners { get; set; }
+    public bool Playing { get; set; }
     public List<SpawnerSingularity> SingularitySpawners { get; set; }
     public float SpawnTime { get; set; }
 
@@ -45,13 +47,16 @@ public class Space : MonoBehaviour
         SetComponents();
     }
 
-    private void Start() {
-        InstantiateEnemySpawners();
-        InstantiateSingularitySpawners();
-    }
-
 
     // Public
+
+    public void EndGame()
+    {
+        Playing = false;
+        Player.Instance.Hide();
+        Player.Instance.Reset();
+        gamePanel.SetActive(true);
+    }
 
     public List<Body> GetBodies(Body body)
     {
@@ -61,6 +66,12 @@ public class Space : MonoBehaviour
     public void ResetCamera()
     {
         eyeOfGod.transform.position = Player.Instance.transform.position + new Vector3(0, 0, eyeOfGod.transform.position.z);
+    }
+
+    public void StartGame() {
+        Playing = true;
+        InstantiateEnemySpawners();
+        InstantiateSingularitySpawners();
     }
 
 
@@ -107,6 +118,7 @@ public class Space : MonoBehaviour
     {
         Bodies = new List<Body>();
         EnemySpawners = new List<SpawnerEnemy>();
+        Playing = false;
         SingularitySpawners = new List<SpawnerSingularity>();
         SpawnTime = 4f;
     }
