@@ -26,8 +26,12 @@ public class Body : MonoBehaviour
     }
 
     private void Update() {
-        float distanceFromPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
-        if (distanceFromPlayer > 150) RemoveFromSpace();
+        if (!Space.Instance.Playing && !IsPlayer()) {
+            RemoveFromSpace();
+        } else if (!IsPlayer() && Player.Instance != null) {
+            float distanceFromPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
+            if (distanceFromPlayer > 150) RemoveFromSpace();
+        }
     }
 
 
@@ -35,7 +39,7 @@ public class Body : MonoBehaviour
 
     public void AddForce(Vector3 force, ForceMode mode = ForceMode.Impulse)
     {
-        if (IsShip()) {
+        if (IsPlayer()) {
             force *= shipForceMultiplier;
         }
 
@@ -47,7 +51,7 @@ public class Body : MonoBehaviour
         SetMass(GetMass() + amount);
     }
 
-    public bool IsShip()
+    public bool IsPlayer()
     {
         return GetComponent<Player>();
     }

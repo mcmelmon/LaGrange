@@ -36,7 +36,7 @@ public class SpawnerEnemy : MonoBehaviour
     {
         WaitForSeconds waitFor = new WaitForSeconds(Space.Instance.SpawnTime * 5f);
 
-        while (true) {
+        while (Space.Instance.Playing) {
             if (Enemy == null) {
                 int coinflip = Random.Range(0, 10);
                 if (coinflip <= 1) InstantiateSpawn(transform.position);

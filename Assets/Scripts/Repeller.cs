@@ -31,7 +31,7 @@ public class Repeller : MonoBehaviour
         float expansion =  8 * Mathf.PI * Body.GetMass() * Space.Instance.E / Mathf.Pow(2f * distance, 3);
         Vector3 force = direction.normalized * expansion;
 
-        if (!float.IsNaN(force.x) && !other.IsShip()) other.AddForce(force);
+        if (!float.IsNaN(force.x) && !other.IsPlayer()) other.AddForce(force);
     }
 
     private void SetComponents()
